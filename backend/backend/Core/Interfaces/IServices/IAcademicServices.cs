@@ -1,0 +1,26 @@
+﻿using backend.Core.DTOs.General;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using backend.Core.DTOs.Academics;
+
+namespace backend.Core.Interfaces.IServices
+{
+    public interface IAcademicServices
+    {
+        Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicDto);
+
+        Task<GetAcademicsDto> GetMyAcademicsAsync(ClaimsPrincipal User);
+
+        Task<IEnumerable<GetAllAcademicsDto>> GetAcademicsAsync();
+
+        Task<GetAcademicsDto> GetAcademicsByIdAsync(int id);
+
+        Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto, int id);
+
+        Task<GeneralServiceResponseDto> DeleteAcademicsAsync(ClaimsPrincipal User, int id);
+
+    }
+}

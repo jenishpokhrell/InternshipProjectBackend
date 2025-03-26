@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend.Core.DTOs.Skill
+{
+    public class GetSkillDto
+    {
+        public int SkillId { get; set; }
+        public string Skill { get; set; }
+    }
+}

@@ -1,0 +1,30 @@
+﻿using backend.Core.DataContext;
+using backend.Core.Entities;
+using backend.Core.Interfaces.IRepositories;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend.Repositories
+{
+    public class CandidateSkillRepositories : ICandidateSkillRepositories
+    {
+        private readonly DapperContext _dContext;
+
+        public CandidateSkillRepositories(DapperContext dContext)
+        {
+            _dContext = dContext;
+        }
+        public async Task<IEnumerable<CandidateSkill>> GetCandidateSkills(string candidateId)
+        {
+            var query = "SELECT * FROM CandidateSkills WHERE CandidateId = @CandidateId";
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<CandidateSkill>(query, new { candidateId });
+            }
+        }
+    }
+}
