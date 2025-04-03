@@ -77,7 +77,7 @@ namespace backend
             services.AddScoped<ISavedCandidateRepositories, SavedCandidateRepositories>();
 
             services.AddScoped<ISavedJobServices, SavedJobServices>();
-            services.AddScoped<ISavedJobRepositories, SavedJobRepositories>();
+            //services.AddScoped<ISavedJobRepositories, SavedJobRepositories>();
 
             services.AddScoped<ISkillServices, SkillServices>();
             services.AddScoped<ISkillRepositories, SkillRepositories>();
@@ -205,6 +205,14 @@ namespace backend
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend v1"));
             }
 
+            app.UseCors(options =>
+            {
+                options
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+            }
+);
             app.UseHttpsRedirection();
 
             app.UseRouting();

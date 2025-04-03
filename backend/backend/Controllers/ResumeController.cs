@@ -29,7 +29,7 @@ namespace backend.Controllers
         public async Task<IActionResult> AddResume([FromForm] ResumeDto resumeDto,
             [FromServices] CloudinaryServices cloudinaryServices)
         {
-            var addResume = await _resumeServices.AddResumeAsync(User, resumeDto, cloudinaryServices);
+            var addResume = await _resumeServices.AddorUpdateResumeAsync(User, resumeDto, cloudinaryServices);
             return Ok(addResume);
         }
     }

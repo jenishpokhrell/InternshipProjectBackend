@@ -97,13 +97,15 @@ namespace backend.Controllers
             }
 
         }
-
         [HttpPut]
         [Route("Update-User/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAsync(string id ,[FromBody] UpdateUserDto updateUserDto)
+        public async Task<IActionResult> UpdateAsync(string id,
+                    [FromForm] UpdateUserDto updateUserDto,
+                    [FromForm] IFormFile profilePhoto,
+                    [FromServices] CloudinaryServices cloudinaryServices)
         {
-            var updateUser = await _authServices.UpdateAsync(User, updateUserDto, id);
+            var updateUser = await _authServices.UpdateAsync(User, updateUserDto, id, profilePhoto, cloudinaryServices);
             if (!updateUser.IsSuccess)
             {
                 return BadRequest();
