@@ -69,15 +69,15 @@ namespace backend.Controllers
         public async Task<IActionResult> UpdateAcademics([FromBody] AddAcademicsDto addAcademicsDto, int id)
         {
             var updatedAcademic = await _academicServices.UpdateAcademicsAsync(User, addAcademicsDto, id);
-            if (!updatedAcademic.IsSuccess)
+            if (updatedAcademic.IsSuccess)
             {
-                return StatusCode(updatedAcademic.StatusCode, updatedAcademic.Message);
+                return Ok(updatedAcademic);
             }
-            return Ok(updatedAcademic);
+            return StatusCode(updatedAcademic.StatusCode, updatedAcademic.Message);
         }
 
         [HttpDelete]
-        [Route("DeleteAcademics")]
+        [Route("DeleteAcademics/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteAcademics(int id)
         {

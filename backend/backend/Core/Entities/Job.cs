@@ -22,6 +22,6 @@ namespace backend.Core.Entities
         public bool IsActive { get; set; }
         public string EmployerId { get; set; }
         public string PostedBy { get; set; }
-        public ICollection<JobApplication> JobApplications { get; set; }
+        public IList<JobApplication> JobApplications { get; set; }
     }
 }

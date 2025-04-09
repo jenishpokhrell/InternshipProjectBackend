@@ -7,6 +7,7 @@ namespace backend.Core.DTOs.Projects
 {
     public class GetProjectDto
     {
+        public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
         public string ProjectURL { get; set; }

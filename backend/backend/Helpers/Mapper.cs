@@ -32,6 +32,7 @@ namespace backend.Helpers
             CreateMap<Academic, GetAcademicsDto>().ReverseMap();
             CreateMap<Academic, GetAllAcademicsDto>().ReverseMap();
             CreateMap<Experience, GetExperienceDto>()
+                .ForMember(f => f.From, frm => frm.MapFrom(src => src.From.ToString("yyyy-MM-dd")))
                 .ForMember(d => d.To, opt => opt.MapFrom(src => src.To.HasValue ? src.To.Value.ToString("yyyy-MM-dd") : "Present"))
                 .ReverseMap();
             CreateMap<Log, GetLogDto>().ReverseMap();

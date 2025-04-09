@@ -36,7 +36,7 @@ namespace backend.Controllers
         }
 
         [HttpPut]
-        [Route("Update-Project")]
+        [Route("Update-Project/{id}")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
         public async Task<IActionResult> UpdateProjectAsync([FromBody] AddProjectDto addProjectDto, int id)
         {
@@ -63,7 +63,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteProject")]
+        [Route("DeleteProject/{id}")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
         public async Task<IActionResult> DeleteProjectAsync(int id)
         {
