@@ -49,6 +49,16 @@ namespace backend.Controllers
             return Ok(experiences);
         }
 
+
+        [HttpGet]
+        [Route("GetAllExperiences")]
+        [Authorize]
+        public async Task<IActionResult> GetAllExperiences()
+        {
+            var experiences = await _experiencesServices.GetAllExperiencesAsync();
+            return Ok(experiences);
+        }
+
         [HttpPut]
         [Route("Update-Experience/{id}")]
         [Authorize]

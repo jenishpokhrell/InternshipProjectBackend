@@ -250,10 +250,15 @@ namespace backend.Core.Services
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var jobs = await _jobrepositories.GetAllJobsAsync();
-            var myjobs = jobs.Where(j => j.EmployerId == loggedInUserId);
+            var myjobs = jobs.Where(j => j.EmployerId == loggedInUserId).ToList();
             if (myjobs is null)
             {
                 throw new Exception("You haven't posted any jobs yet.");
+            }
+
+            foreach (var job in myjobs){
+                var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
+                job.JobApplications = applications.ToList();
             }
             return _mapper.Map<IEnumerable<GetMyJobDto>>(myjobs);
         }
@@ -269,6 +274,10 @@ namespace backend.Core.Services
 
             if (job.EmployerId != loggedInUserId)
                 throw new UnauthorizedAccessException("You are not authorized to access this job posting.");
+
+            var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
+            job.JobApplications = applications.ToList();
+
 
             return _mapper.Map<GetMyJobDto>(job);
         }

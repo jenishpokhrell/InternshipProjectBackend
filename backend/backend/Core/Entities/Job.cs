@@ -1,4 +1,5 @@
-﻿using System;
+﻿using backend.Core.DTOs.JobApplication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;

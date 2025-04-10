@@ -1,4 +1,5 @@
 ﻿using backend.Core.DataContext;
+using backend.Core.DTOs.JobApplication;
 using backend.Core.Entities;
 using backend.Core.Interfaces.IRepositories;
 using Dapper;
@@ -34,6 +35,16 @@ namespace backend.Repositories
             using(var connection = _dContext.CreateConnection())
             {
                 return await connection.QueryAsync<Job>(query);
+            }
+        }
+
+        public async Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId)
+        {
+            var query = "SELECT JobStatus, CandidateId, CandidateName FROM JobApplications WHERE JobId = @jobId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<JobApplication>(query, new { jobId });
             }
         }
 

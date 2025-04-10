@@ -74,5 +74,15 @@ namespace backend.Repositories
                 await connection.ExecuteAsync(query, new { id });
             }
         }
+
+        public async Task<IEnumerable<Experience>> GetAllExperiences()
+        {
+            var query = "SELECT * FROM Experiences";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<Experience>(query);
+            }
+        }
     }
 }

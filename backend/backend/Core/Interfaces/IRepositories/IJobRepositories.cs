@@ -1,4 +1,5 @@
-﻿using backend.Core.Entities;
+﻿using backend.Core.DTOs.JobApplication;
+using backend.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace backend.Core.Interfaces.IRepositories
         Task<Job> GetJobById(int id);
 
         Task<IEnumerable<Job>> GetAllJobsAsync();
+
+        Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId);
 
         Task ApplyForJobAsync(ClaimsPrincipal User, int id);
 

@@ -206,5 +206,12 @@ namespace backend.Core.Services
                 Message = "Experience Deleted Successfully."
             };
         }
+
+        public async Task<IEnumerable<GetExperienceDto>> GetAllExperiencesAsync()
+        {
+            var experiences = await _experienceRepositories.GetAllExperiences();
+
+            return _mapper.Map<IEnumerable<GetExperienceDto>>(experiences);
+        }
     }
 }
