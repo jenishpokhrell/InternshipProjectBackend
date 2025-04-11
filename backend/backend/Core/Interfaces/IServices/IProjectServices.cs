@@ -16,6 +16,8 @@ namespace backend.Core.Interfaces
 
         Task<IEnumerable<GetMyProjectDto>> GetMyProjectsAsync(ClaimsPrincipal User);
 
+        Task<IEnumerable<GetProjectDto>> GetProjectsByCandidateIdAsync(string candidateId);
+
         Task<GetProjectDto> GetProjectByIdAsync(ClaimsPrincipal User, int id);
 
         Task<GeneralServiceResponseDto> DeleteProjectAsync(ClaimsPrincipal User, int id);

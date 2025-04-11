@@ -13,6 +13,7 @@ using backend.Core.DTOs.Projects;
 using backend.Core.DTOs.SavedCandidates;
 using backend.Core.DTOs.Skill;
 using backend.Core.DTOs.Log;
+using backend.Core.DTOs.Resume;
 
 namespace backend.Helpers
 {
@@ -40,6 +41,7 @@ namespace backend.Helpers
             CreateMap<SavedCandidate, SavedCandidateDto>().ReverseMap();
             CreateMap<Skills, GetSkillDto>().ReverseMap();
             CreateMap<CandidateSkill, GetCandidateSkillsDto>().ReverseMap();
+            CreateMap<Resume, GetResumeDto>().ReverseMap();
         }
     }
 }

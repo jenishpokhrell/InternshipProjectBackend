@@ -213,5 +213,17 @@ namespace backend.Core.Services
 
             return _mapper.Map<IEnumerable<GetExperienceDto>>(experiences);
         }
+
+        public async Task<IEnumerable<GetExperienceDto>> GetExperienceByCandidateIdAsync(string candidateId)
+        {
+            var candidateExperiences = await _experienceRepositories.GetExperienceByCandidateId(candidateId);
+
+            if (candidateExperiences is null)
+            {
+                throw new Exception("Candidate hasn't added any academics yet.");
+            }
+
+            return _mapper.Map<IEnumerable<GetExperienceDto>>(candidateExperiences);
+        }
     }
 }

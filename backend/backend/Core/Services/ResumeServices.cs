@@ -1,8 +1,10 @@
-﻿using backend.Core.DataContext;
+﻿using AutoMapper;
+using backend.Core.DataContext;
 using backend.Core.DTOs.General;
 using backend.Core.DTOs.Resume;
 using backend.Core.Entities;
 using backend.Core.Interfaces;
+using backend.Core.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,10 +19,14 @@ namespace backend.Core.Services
     public class ResumeServices : IResumeServices
     {
         private readonly ApplicationDBContext _context;
+        private readonly IResumeRepositories _resumeRepositories;
+        private readonly IMapper _mapper;
 
-        public ResumeServices(ApplicationDBContext context)
+        public ResumeServices(ApplicationDBContext context, IResumeRepositories resumeRepositories, IMapper mapper)
         {
             _context = context;
+            _resumeRepositories = resumeRepositories;
+            _mapper = mapper;
         }
 
         public async Task<GeneralServiceResponseDto> AddorUpdateResumeAsync(ClaimsPrincipal User, ResumeDto resumeDto,
@@ -67,6 +73,18 @@ namespace backend.Core.Services
                 StatusCode = 200,
                 Message = "Resume Uploaded Successfully.",
             };
+        }
+
+        public async Task<GetResumeDto> GetResumeByCandidateIdAsync(string candidateId)
+        {
+            var candidateResume = await _resumeRepositories.GetResumeByCandidateId(candidateId);
+
+            if(candidateResume is null)
+            {
+                throw new Exception("Candidate haven't added their resume yet.");
+            }
+
+            return _mapper.Map<GetResumeDto>(candidateResume);
         }
     }
 }

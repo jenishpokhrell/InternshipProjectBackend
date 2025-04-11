@@ -49,6 +49,15 @@ namespace backend.Controllers
             return Ok(academic); 
         }
 
+        [HttpGet]
+        [Route("GetAcademicsByCandidateId/{candidateId}")]
+        [Authorize(Roles = StaticUserRole.ADMIN_EMPLOYER)]
+        public async Task<IActionResult> GetAcademicsByCandidateId(string candidateId)
+        {
+            var academic = await _academicServices.GetAcademicsByCandidateIdAsync(candidateId);
+            return Ok(academic);
+        }
+
         [HttpPost]
         [Route("Add-Academics")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]

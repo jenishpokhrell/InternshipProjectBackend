@@ -62,6 +62,15 @@ namespace backend.Controllers
             return Ok(project);
         }
 
+        [HttpGet]
+        [Route("GetProjectByCandidateId/{candidateId}")]
+        [Authorize]
+        public async Task<IActionResult> GetProjecyByCandidateId(string candidateId)
+        {
+            var project = await _projectServices.GetProjectsByCandidateIdAsync(candidateId);
+            return Ok(project);
+        }
+
         [HttpDelete]
         [Route("DeleteProject/{id}")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]

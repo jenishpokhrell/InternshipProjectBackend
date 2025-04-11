@@ -32,5 +32,14 @@ namespace backend.Controllers
             var addResume = await _resumeServices.AddorUpdateResumeAsync(User, resumeDto, cloudinaryServices);
             return Ok(addResume);
         }
+
+        [HttpGet]
+        [Route("GetResumeByCandidateId/{candidateId}")]
+        [Authorize(Roles = StaticUserRole.ADMIN_EMPLOYER)]
+        public async Task<IActionResult> GetResumeByCandidateId(string candidateId)
+        {
+            var resume = await _resumeServices.GetResumeByCandidateIdAsync(candidateId);
+            return Ok(resume);
+        }
     }
 }

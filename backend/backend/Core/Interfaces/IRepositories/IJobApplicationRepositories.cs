@@ -10,5 +10,7 @@ namespace backend.Core.Interfaces.IRepositories
     public interface IJobApplicationRepositories
     {
         Task<IEnumerable<JobApplication>> GetMyJobApplications(ClaimsPrincipal User);
+
+        Task<Job> GetJobDetails();
     }
 }

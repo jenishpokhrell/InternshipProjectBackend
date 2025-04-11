@@ -14,6 +14,8 @@ namespace backend.Core.Interfaces.IServices
 
         Task<GetAcademicsDto> GetMyAcademicsAsync(ClaimsPrincipal User);
 
+        Task<GetAcademicsDto> GetAcademicsByCandidateIdAsync(string candidateId);
+
         Task<IEnumerable<GetAllAcademicsDto>> GetAcademicsAsync();
 
         Task<GetAcademicsDto> GetAcademicsByIdAsync(int id);

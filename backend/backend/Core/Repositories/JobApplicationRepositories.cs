@@ -18,6 +18,12 @@ namespace backend.Repositories
         {
             _dContext = dContext;
         }
+
+        public Task<Job> GetJobDetails()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<JobApplication>> GetMyJobApplications(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -26,6 +32,8 @@ namespace backend.Repositories
             using (var connection = _dContext.CreateConnection())
             {
                 return await connection.QueryAsync<JobApplication>(query, new { loggedInUserId });
+
+
             }
         }
     }

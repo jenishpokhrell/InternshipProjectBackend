@@ -36,6 +36,16 @@ namespace backend.Repositories
             }
         }
 
+        public async Task<IEnumerable<Projects>> GetProjectByCandidateId(string candidateId)
+        {
+            var query = "SELECT * FROM Projects WHERE CandidateId = @candidateId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<Projects>(query, new { candidateId });
+            }
+        }
+
         public async Task<Projects> GetProjectById(int id)
         {
             var query = "SELECT * FROM Projects WHERE ProjectId = @Id";

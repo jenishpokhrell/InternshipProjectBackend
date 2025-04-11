@@ -41,6 +41,15 @@ namespace backend.Controllers
         }
 
         [HttpGet]
+        [Route("GetExperienceByCandidateId/{candidateId}")]
+        [Authorize]
+        public async Task<IActionResult> GetExperienceByCandidateId(string candidateId)
+        {
+            var experience = await _experiencesServices.GetExperienceByCandidateIdAsync(candidateId);
+            return Ok(experience);
+        }
+
+        [HttpGet]
         [Route("GetMyExperiences")]
         [Authorize]
         public async Task<IActionResult> GetMyExperiences()

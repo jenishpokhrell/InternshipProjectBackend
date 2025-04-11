@@ -16,6 +16,8 @@ namespace backend.Core.Interfaces
 
         Task<GetExperienceDto> GetExperienceByIdAsync(ClaimsPrincipal User, int id);
 
+        Task<IEnumerable<GetExperienceDto>> GetExperienceByCandidateIdAsync(string candidateId);
+
         Task<IEnumerable<GetExperienceDto>> GetMyExperiencesAsync(ClaimsPrincipal User);
 
         Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto, int id);

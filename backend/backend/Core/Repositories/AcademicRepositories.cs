@@ -74,5 +74,15 @@ namespace backend.Repositories
                 await connection.ExecuteAsync(query, new { id });
             }
         }
+
+        public async Task<Academic> GetAcademicsByCandidateId(string candidateId)
+        {
+            var query = "SELECT * FROM Academics WHERE CandidateId = @candidateId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryFirstOrDefaultAsync<Academic>(query, new { candidateId });
+            }
+        }
     }   
 }

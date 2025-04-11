@@ -15,6 +15,8 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<Experience> GetExperienceById(int id);
 
+        Task<IEnumerable<Experience>> GetExperienceByCandidateId(string candidateId);
+
         Task<IEnumerable<Experience>> GetMyExperiencesAsync(ClaimsPrincipal User);
 
         Task UpdateExperienceAsync(Experience experience);

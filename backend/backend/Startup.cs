@@ -25,6 +25,7 @@ using backend.Core.Services;
 using backend.Core.Interfaces.IRepositories;
 using backend.Repositories;
 using backend.Core.Interfaces.IServices;
+using backend.Core.Repositories;
 
 namespace backend
 {
@@ -83,6 +84,7 @@ namespace backend
             services.AddScoped<ISkillRepositories, SkillRepositories>();
 
             services.AddScoped<IResumeServices, ResumeServices>();
+            services.AddScoped<IResumeRepositories, ResumeRepositories>();
 
             services.AddScoped<ICandidateSkillServices, CandidateSkillServices>();
             services.AddScoped<ICandidateSkillRepositories, CandidateSkillRepositories>();

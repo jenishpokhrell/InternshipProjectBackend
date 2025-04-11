@@ -14,6 +14,8 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<IEnumerable<Academic>> GetAcademics();
 
+        Task<Academic> GetAcademicsByCandidateId(string candidateId);
+
         Task<Academic> GetAcademicById(int id);
 
         Task<Academic> GetMyAcademic(ClaimsPrincipal User);

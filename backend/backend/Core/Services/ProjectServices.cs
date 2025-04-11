@@ -159,5 +159,16 @@ namespace backend.Core.Services
             };
         }
 
+        public async Task<IEnumerable<GetProjectDto>> GetProjectsByCandidateIdAsync(string candidateId)
+        {
+            var candidateProjects = await _projectRepositories.GetProjectByCandidateId(candidateId);
+
+            if(candidateProjects is null)
+            {
+                throw new Exception("No work experience found");
+            }
+
+            return _mapper.Map<IEnumerable<GetProjectDto>>(candidateProjects);
+        }
     }
 }

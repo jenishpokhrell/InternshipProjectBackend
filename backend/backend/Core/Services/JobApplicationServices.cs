@@ -13,6 +13,7 @@ using backend.Core.Constants;
 using backend.Core.DTOs.JobApplication;
 using backend.Core.Interfaces;
 using backend.Core.Interfaces.IRepositories;
+using backend.Core.DTOs.Job;
 
 namespace backend.Core.Services
 {
@@ -27,6 +28,11 @@ namespace backend.Core.Services
             _context = context;
             _mapper = mapper;
             _jobApplicationRespositories = jobApplicationRespositories;
+        }
+
+        public Task<GetJobDtoForCandidate> GetJobDetails()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<MyJobApplicationsDto>> GetMyJobApplicationAsync(ClaimsPrincipal User)

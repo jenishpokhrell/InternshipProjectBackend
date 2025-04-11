@@ -13,6 +13,8 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<Projects> GetProjectById(int id);
 
+        Task<IEnumerable<Projects>> GetProjectByCandidateId(string candidateId);
+
         Task<IEnumerable<Projects>> GetAllProjects();
     }
 }

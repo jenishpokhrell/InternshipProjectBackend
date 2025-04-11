@@ -84,5 +84,15 @@ namespace backend.Repositories
                 return await connection.QueryAsync<Experience>(query);
             }
         }
+
+        public async Task<IEnumerable<Experience>> GetExperienceByCandidateId(string candidateId)
+        {
+            var query = "SELECT * FROM Experiences WHERE UserId = @candidateId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<Experience>(query, new { candidateId });
+            }
+        }
     }
 }

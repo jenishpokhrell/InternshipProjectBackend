@@ -149,5 +149,17 @@ namespace backend.Core.Services
                 Message = "Academics removed successfully."
             };
         }
+
+        public async Task<GetAcademicsDto> GetAcademicsByCandidateIdAsync(string candidateId)
+        {
+            var candidateAcademics = await _academicrepositories.GetAcademicsByCandidateId(candidateId);
+
+            if(candidateAcademics is null)
+            {
+                throw new Exception("Candidate hasn't added any academics yet.");
+            }
+
+            return _mapper.Map<GetAcademicsDto>(candidateAcademics);
+        }
     }
 }

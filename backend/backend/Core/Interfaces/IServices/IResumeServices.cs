@@ -12,5 +12,7 @@ namespace backend.Core.Interfaces
     public interface IResumeServices
     {
         Task<GeneralServiceResponseDto> AddorUpdateResumeAsync(ClaimsPrincipal User, ResumeDto resumeDto, CloudinaryServices cloudinaryServices);
+
+        Task<GetResumeDto> GetResumeByCandidateIdAsync(string candidateId);
     }
 }
