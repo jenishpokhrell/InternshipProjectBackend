@@ -35,7 +35,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        [Route("ApplyForJob")]
+        [Route("ApplyForJob/{id}")]
         [Authorize]
         public async Task<IActionResult> ApplyForJob(int id)
         {

@@ -40,7 +40,7 @@ namespace backend.Repositories
 
         public async Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId)
         {
-            var query = "SELECT JobStatus, CandidateId, CandidateName FROM JobApplications WHERE JobId = @jobId";
+            var query = "SELECT Id, JobStatus, CandidateId, CandidateName FROM JobApplications WHERE JobId = @jobId";
 
             using (var connection = _dContext.CreateConnection())
             {

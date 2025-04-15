@@ -11,6 +11,6 @@ namespace backend.Core.Interfaces.IRepositories
     {
         Task<IEnumerable<JobApplication>> GetMyJobApplications(ClaimsPrincipal User);
 
-        Task<Job> GetJobDetails();
+        //Task<JobApplication> GetJobApplicationById(int id, ClaimsPrincipal User);
     }
 }

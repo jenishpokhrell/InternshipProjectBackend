@@ -9,6 +9,7 @@ namespace backend.Core.DTOs.Job
 {
     public class GetJobDto
     {
+        public int Id { get; set; }
         public string JobTitle { get; set; }
         public string JobDescription { get; set; }
         public string JobType { get; set; }
@@ -23,6 +24,5 @@ namespace backend.Core.DTOs.Job
         public bool IsActive { get; set; }
         public string EmployerId { get; set; }
         public string PostedBy { get; set; }
-        public IList<JobApplicationsDto> JobApplications { get; set; }
     }
 }

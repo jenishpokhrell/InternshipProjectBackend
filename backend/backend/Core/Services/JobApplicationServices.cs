@@ -46,7 +46,7 @@ namespace backend.Core.Services
         }
 
         public async Task<GeneralServiceResponseDto> UpdateJobApplicationAsync(ClaimsPrincipal User, 
-            UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id, int jobId)
+            UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id)
         {
             var jobApplication = await _context.JobApplications.FindAsync(id);
             if(jobApplication is null)
@@ -59,9 +59,9 @@ namespace backend.Core.Services
                 };
             }
 
-            var job = await _context.Jobs.FindAsync(jobId);
+            var job = await _context.Jobs.FindAsync(jobApplication.JobId);
 
-            if(jobApplication.JobId != job.Id)
+            if (jobApplication.JobId != job.Id)
             {
                 return new GeneralServiceResponseDto()
                 {

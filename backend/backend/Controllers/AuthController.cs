@@ -76,6 +76,15 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Route("ApproveEmployer/{employerId}")]
+        [Authorize(Roles = StaticUserRole.ADMIN)]
+        public async Task<IActionResult> ApproveEmployerAsync(string employerId)
+        {
+            var approveEmployer = await _authServices.ApproveEmployerAsync(employerId);
+            return Ok(approveEmployer);
+        }
+
+        [HttpPost]
         [Route("Me")]
         public async Task<IActionResult> Me([FromBody] MeDto meDto)
         {
@@ -114,15 +123,6 @@ namespace backend.Controllers
             return Ok(updateUser);
         }
 
-        [HttpPut]
-        [Route("ChangePassword/{id}")]
-        [Authorize]
-        public async Task<IActionResult> ChangePassword([FromBody] PasswordDto passwordDto, string id)
-        {
-            var changePassword = await _authServices.ChangePasswordAsync(User, passwordDto, id);
-            return Ok(changePassword);
-        }
-
         [HttpGet]
         [Route("GetAllUsers")]
         [Authorize(Roles = StaticUserRole.ADMIN)]
@@ -140,6 +140,25 @@ namespace backend.Controllers
             var user = await _authServices.GetUserByIdAsync(User, id);
             return Ok(user);
         }
+
+        [HttpGet]
+        [Route("GetPendingEmployers")]
+        [Authorize(Roles = StaticUserRole.ADMIN)]
+        public async Task<IActionResult> GetPendingEmployersAsync()
+        {
+            var employers = await _authServices.GetPendingEmployersAsync();
+            return Ok(employers);
+        }
+
+        [HttpPut]
+        [Route("ChangePassword/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordDto passwordDto, string id)
+        {
+            var changePassword = await _authServices.ChangePasswordAsync(User, passwordDto, id);
+            return Ok(changePassword);
+        }
+
 
         [HttpDelete]
         [Route("DeleteUser/{id}")]

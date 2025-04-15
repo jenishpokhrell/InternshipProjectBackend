@@ -148,6 +148,8 @@ namespace backend.Core.Services
                 photoUrl = await cloudinaryServices.UploadImageAsync(profilePhoto);
             }
 
+            bool isApproved = registerDto.roles == "Candidate" && registerDto.roles == "Admin";
+
             ApplicationUser newUser = new ApplicationUser()
             {
                 Firstname = registerDto.Firstname,
@@ -160,10 +162,11 @@ namespace backend.Core.Services
                 Gender = registerDto.Gender,
                 JobTitle = registerDto.JobTitle,
                 Years_Of_Experience = registerDto.Years_Of_Experience,
+                isApproved = registerDto.roles == "Employer" ? false : true,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            if(registerDto.roles != "Employer" && registerDto.roles != "Candidate")
+            if(registerDto.roles != "Employer" && registerDto.roles != "Candidate" && registerDto.roles != "Admin")
             {
                 return new GeneralServiceResponseDto()
                 {
@@ -171,7 +174,6 @@ namespace backend.Core.Services
                     StatusCode = 400,
                     Message = "Valid Role Required."
                 };
-
             }
 
             if (registerDto.Gender != "Male" && registerDto.Gender != "Female" && registerDto.Gender != "Other")
@@ -217,6 +219,10 @@ namespace backend.Core.Services
                 {
                     await _userManager.AddToRolesAsync(newUser, new List<string> { StaticUserRole.CANDIDATE });
                 }
+                else if (registerDto.roles == "Admin")
+                {
+                    await _userManager.AddToRolesAsync(newUser, new List<string> { StaticUserRole.ADMIN });
+                }
             }
             await _logServices.SaveNewLog(newUser.UserName, "Created an account.");
 
@@ -224,7 +230,9 @@ namespace backend.Core.Services
             {
                 IsSuccess = true,
                 StatusCode = 200,
-                Message = "User Created Successfully."
+                Message = registerDto.roles == "Employer" ? "Employer registered successfully. Waiting for admin approval. This may take few minutes."
+                : registerDto.roles == "Admin" ? "Admin Created Successfully" :
+                "Candidate registered successfully. You can proceed to login."
             };
         }
 
@@ -239,6 +247,11 @@ namespace backend.Core.Services
             if (!isPasswordCorrect)
                 return null;
 
+            if (user.isApproved != true)
+            {
+                throw new Exception("You have not been approved by admin yet.");
+            }
+
             var newToken = await GenerateJWTToken(user);
             var roles = await _userManager.GetRolesAsync(user);
             var userInfo = GenerateUserInfo(user, roles);
@@ -247,6 +260,52 @@ namespace backend.Core.Services
             {
                 NewToken = newToken,
                 UserInfo = userInfo
+            };
+
+        }
+
+        public async Task<IEnumerable<UserInfo>> GetPendingEmployersAsync()
+        {
+            var pendingEmployers = await _userManager.Users.Where(u => u.isApproved == false).ToListAsync();
+            if (pendingEmployers is null)
+            {
+                throw new Exception("No pending employers.");
+            }
+
+            return _mapper.Map<IEnumerable<UserInfo>>(pendingEmployers);
+        }
+
+        public async Task<GeneralServiceResponseDto> ApproveEmployerAsync(string employerId)
+        {
+            var employer = await _authRepositories.GetUserById(employerId);
+            if (employer is null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 404,
+                    Message = "Employer not found."
+                };
+            }
+
+            if (employer.isApproved != false)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = true,
+                    StatusCode = 200,
+                    Message = "Employer already approved."
+                };
+            }
+
+            employer.isApproved = true;
+            await _userManager.UpdateAsync(employer);
+
+            return new GeneralServiceResponseDto()
+            {
+                IsSuccess = true,
+                StatusCode = 200,
+                Message = "Employer approved successfully."
             };
 
         }
@@ -540,16 +599,6 @@ namespace backend.Core.Services
         //Generating user info to return after user logs in
         private UserInfo GenerateUserInfo(ApplicationUser User, IEnumerable<string> Roles)
         {
-            if (Roles.Contains("ADMIN"))
-            {
-                return new UserInfo
-                {
-                    Id = User.Id,
-                    Username = User.UserName,
-                    Roles = Roles.ToList()
-                };
-            }
-
             var userInfo = _mapper.Map<UserInfo>(User);
             userInfo.Roles = Roles.ToList();
             return userInfo;

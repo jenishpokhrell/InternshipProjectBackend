@@ -10,7 +10,8 @@ namespace backend.Core.DTOs.Auth
     public enum Roles
     {
         Employer,
-        Candidate
+        Candidate,
+        Admin
     }
     public class RegisterDto
     {

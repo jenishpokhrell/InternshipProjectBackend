@@ -18,6 +18,7 @@ namespace backend.Core.DTOs.Auth
         public string Gender { get; set; }
         public string JobTitle { get; set; }
         public int Years_Of_Experience { get; set; }
+        public bool isApproved { get; set; }
         public List<string> Roles { get; set; }
     }
 }

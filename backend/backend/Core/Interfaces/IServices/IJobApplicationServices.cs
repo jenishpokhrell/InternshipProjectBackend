@@ -17,6 +17,6 @@ namespace backend.Core.Interfaces
         Task<GetJobDtoForCandidate> GetJobDetails();
 
         Task<GeneralServiceResponseDto> UpdateJobApplicationAsync(ClaimsPrincipal User,
-            UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id, int jobId);
+            UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id);
     }
 }

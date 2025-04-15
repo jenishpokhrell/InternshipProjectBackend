@@ -19,6 +19,8 @@ namespace backend.Core.Entities
         public string JobTitle { get; set; }
         public string Years_Of_Experience { get; set; }
 
+        public bool isApproved { get; set; }
+
         [NotMapped]
         public IEnumerable<string> Roles { get; set; }
     }

@@ -32,11 +32,12 @@ namespace backend.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateJobApplicationStatus")]
+        [Route("UpdateJobApplicationStatus/{jobApplicationId}")]
         [Authorize(Roles = StaticUserRole.EMPLOYER)]
-        public async Task<IActionResult> UpdateJobApplicationStatus([FromBody] UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id, int jobId)
+        public async Task<IActionResult> UpdateJobApplicationStatus([FromBody] UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int jobApplicationId
+             )
         {
-            var updateStatus = await _jobApplicationServices.UpdateJobApplicationAsync(User, updateJobApplicationStatusDto, id, jobId);
+            var updateStatus = await _jobApplicationServices.UpdateJobApplicationAsync(User, updateJobApplicationStatusDto, jobApplicationId);
             return Ok(updateStatus);
         }
     }

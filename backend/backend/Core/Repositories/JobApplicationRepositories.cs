@@ -27,13 +27,19 @@ namespace backend.Repositories
         public async Task<IEnumerable<JobApplication>> GetMyJobApplications(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var query = "SELECT * FROM JobApplications WHERE CandidateId = @loggedInUserId";
+            var query = "SELECT ja.JobStatus, ja.Message, j.* FROM JobApplications ja INNER JOIN Jobs j ON ja.JobId = j.Id WHERE ja.CandidateId = @loggedInUserId";
 
             using (var connection = _dContext.CreateConnection())
             {
-                return await connection.QueryAsync<JobApplication>(query, new { loggedInUserId });
-
-
+                return await connection.QueryAsync<JobApplication, Job, JobApplication>(query,
+                    (ja, job) =>
+                    {
+                        ja.Job = job;
+                        return ja;
+                    },
+                    new { loggedInUserId },
+                    splitOn: "Id"
+                    );
             }
         }
     }

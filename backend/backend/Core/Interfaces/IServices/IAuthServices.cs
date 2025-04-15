@@ -20,6 +20,10 @@ namespace backend.Core.Interfaces
 
         Task<LoginServiceResponseDto> LoginAsync(LoginDto loginDto);
 
+        Task<IEnumerable<UserInfo>> GetPendingEmployersAsync();
+
+        Task<GeneralServiceResponseDto> ApproveEmployerAsync(string employerId);
+
         Task<LoginServiceResponseDto> MeAsync(MeDto meDto);
 
         Task<GeneralServiceResponseDto> UpdateAsync(ClaimsPrincipal User, UpdateUserDto updateUserDto, string id, IFormFile profilePhoto,
