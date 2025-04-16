@@ -46,7 +46,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetMyProjects")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        [Authorize]
         public async Task<IActionResult> GetMyProjectsAsync()
         {
             var projects = await _projectServices.GetMyProjectsAsync(User);

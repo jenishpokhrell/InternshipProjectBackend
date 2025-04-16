@@ -267,17 +267,24 @@ namespace backend.Core.Services
         public async Task<IEnumerable<UserInfo>> GetPendingEmployersAsync()
         {
             var pendingEmployers = await _userManager.Users.Where(u => u.isApproved == false).ToListAsync();
+            List<UserInfo> employersInfo = new List<UserInfo>();
+            foreach(var employers in pendingEmployers)
+            {
+                var roles = await _userManager.GetRolesAsync(employers);
+                var employersInfoResult = GenerateUserInfo(employers, roles);
+                employersInfo.Add(employersInfoResult);
+            }
             if (pendingEmployers is null)
             {
                 throw new Exception("No pending employers.");
             }
 
-            return _mapper.Map<IEnumerable<UserInfo>>(pendingEmployers);
+            return _mapper.Map<IEnumerable<UserInfo>>(employersInfo);
         }
 
         public async Task<GeneralServiceResponseDto> ApproveEmployerAsync(string employerId)
         {
-            var employer = await _authRepositories.GetUserById(employerId);
+            var employer = await _userManager.FindByIdAsync(employerId);
             if (employer is null)
             {
                 return new GeneralServiceResponseDto()

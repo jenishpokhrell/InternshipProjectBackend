@@ -45,7 +45,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetAllJobsForCandidate")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        [Authorize]
         public async Task<IActionResult> GetAllJobsForCandidateAsync()
         {
             var jobs = await _jobServices.GetAllJobsForCandidateAsync();
@@ -58,7 +58,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetAllJobs")]
-        [Authorize(Roles = StaticUserRole.ADMIN)]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllJobsAsync()
         {
             var jobs = await _jobServices.GetAllJobsAsync();
@@ -89,7 +89,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetJobByIdForCandidate/{id}")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        [Authorize]
         public async Task<IActionResult> GetJobByIdForCandidate(int id)
         {
             var job = await _jobServices.GetJobByIdForCandidatesAsync(id);

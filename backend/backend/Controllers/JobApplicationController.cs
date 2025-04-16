@@ -24,7 +24,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetMyJobApplications")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        [Authorize]
         public async Task<IActionResult> GetMyJobApplication()
         {
             var myApplications = await _jobApplicationServices.GetMyJobApplicationAsync(User);

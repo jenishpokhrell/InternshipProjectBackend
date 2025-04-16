@@ -32,7 +32,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("GetMySavedJobs")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        [Authorize]
         public async Task<IActionResult> GetMySavedJobs()
         {
             var savedJobs = await _savedJobServices.GetMySavedJobsAsync(User);
