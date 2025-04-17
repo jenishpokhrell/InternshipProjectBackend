@@ -14,6 +14,8 @@ namespace backend.Core.Interfaces.IServices
 
         Task<IEnumerable<GetJobDtoForCandidate>> GetMySavedJobsAsync(ClaimsPrincipal User);
 
+        Task<GeneralServiceResponseDto> UnsaveJobsAsync(ClaimsPrincipal User, int jobId);
+
         Task<GetJobDtoForCandidate> GetSavedJobByIdAsync(ClaimsPrincipal User, int jobId);
     }
 }

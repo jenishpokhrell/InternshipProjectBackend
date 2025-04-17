@@ -77,5 +77,34 @@ namespace backend.Core.Services
             return savedJob;
         }
 
+        public async Task<GeneralServiceResponseDto> UnsaveJobsAsync(ClaimsPrincipal User, int jobId)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var job = await _context.SavedJobs.FindAsync(jobId);
+
+            if(job is null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 404,
+                    Message = "Job isn't saved yet."
+                };
+            }
+
+            if(job.CandidateId == loggedInUserId)
+            {
+                _context.Remove(job);
+                await _context.SaveChangesAsync();
+            }
+
+            return new GeneralServiceResponseDto()
+            {
+                IsSuccess = true,
+                StatusCode = 200,
+                Message = "Job unsaved successsfully"
+            };
+
+        }
     }
 }

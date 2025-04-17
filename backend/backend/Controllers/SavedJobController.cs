@@ -47,5 +47,14 @@ namespace backend.Controllers
             var savedJob = await _savedJobServices.GetSavedJobByIdAsync(User, jobId);
             return Ok(savedJob);
         }
+
+        [HttpDelete]
+        [Route("UnsaveJob/{jobId}")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> UnsaveJobAsync(int jobId)
+        {
+            var unsaveJob = await _savedJobServices.UnsaveJobsAsync(User, jobId);
+            return Ok(unsaveJob);
+        }
     }
 }
