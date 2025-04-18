@@ -42,6 +42,19 @@ namespace backend.Core.Services
                     Message = "Job doesn't exist."
                 };
             }
+         
+
+            var savedJobsExists = await _context.SavedJobs.Where(sj => sj.JobId == jobId && sj.CandidateId == loggedInUserId).FirstOrDefaultAsync();
+
+            if(savedJobsExists is not null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 201,
+                    Message = "Job saved already."
+                };
+            }
 
             var saveJob = new SavedJob
             {
@@ -80,7 +93,7 @@ namespace backend.Core.Services
         public async Task<GeneralServiceResponseDto> UnsaveJobsAsync(ClaimsPrincipal User, int jobId)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var job = await _context.SavedJobs.FindAsync(jobId);
+            var job = await _context.SavedJobs.Where(sj => sj.JobId == jobId && sj.CandidateId == loggedInUserId).FirstOrDefaultAsync();
 
             if(job is null)
             {
@@ -92,11 +105,8 @@ namespace backend.Core.Services
                 };
             }
 
-            if(job.CandidateId == loggedInUserId)
-            {
-                _context.Remove(job);
-                await _context.SaveChangesAsync();
-            }
+            _context.SavedJobs.Remove(job);
+            await _context.SaveChangesAsync();
 
             return new GeneralServiceResponseDto()
             {
