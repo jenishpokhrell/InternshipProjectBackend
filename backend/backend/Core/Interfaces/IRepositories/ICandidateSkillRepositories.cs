@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace backend.Core.Interfaces.IRepositories
@@ -9,5 +10,7 @@ namespace backend.Core.Interfaces.IRepositories
     public interface ICandidateSkillRepositories
     {
         Task<IEnumerable<CandidateSkill>> GetCandidateSkills(string candidateId);
+
+        Task<IEnumerable<CandidateSkill>> GetMySkills(ClaimsPrincipal User);
     }
 }

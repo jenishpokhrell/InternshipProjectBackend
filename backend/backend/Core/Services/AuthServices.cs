@@ -392,7 +392,7 @@ namespace backend.Core.Services
             user.Address = updateUserDto.Address;
             user.Contact= updateUserDto.Contact;
             user.Email = updateUserDto.Email;
-            user.ProfilePhoto = updateUserDto.ProfilePhoto;
+            //user.ProfilePhoto = user.ProfilePhoto;
             user.Gender = updateUserDto.Gender;
             user.JobTitle = updateUserDto.JobTitle;
             user.Years_Of_Experience = updateUserDto.Years_Of_Experience;

@@ -7,6 +7,6 @@ namespace backend.Core.DTOs.Skill
 {
     public class GetCandidateSkillsDto
     {
-        public int SkillId { get; set; }
+        public string skill { get; set; }
     }
 }

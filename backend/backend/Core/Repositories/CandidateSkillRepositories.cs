@@ -5,6 +5,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace backend.Repositories
@@ -24,6 +25,18 @@ namespace backend.Repositories
             using(var connection = _dContext.CreateConnection())
             {
                 return await connection.QueryAsync<CandidateSkill>(query, new { candidateId });
+            }
+        }
+
+        public async Task<IEnumerable<CandidateSkill>> GetMySkills(ClaimsPrincipal User)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var query = "SELECT * FROM CandidateSkills WHERE CandidateId = @loggedInUserId";
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<CandidateSkill>(query, new { loggedInUserId });
             }
         }
     }

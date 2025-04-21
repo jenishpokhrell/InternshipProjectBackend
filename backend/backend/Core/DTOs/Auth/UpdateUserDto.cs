@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace backend.Core.DTOs.Auth
         [Required(ErrorMessage = "Required Valid Email.")]
         public string Email { get; set; }
 
-        public string ProfilePhoto { get; set; }
+        public IFormFile ProfilePhoto { get; set; }
 
         [Required(ErrorMessage = "Required Gender")]
         public string Gender { get; set; }

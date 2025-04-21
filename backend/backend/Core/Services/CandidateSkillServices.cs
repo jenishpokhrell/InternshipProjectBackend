@@ -42,14 +42,16 @@ namespace backend.Core.Services
                     StatusCode = 400,
                     Message = "Skill doesn't exist."
                 };
-            } 
+            }
 
+           
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             foreach(var skillId in addCandidateSkillDto.SkillId)
             {
                 if(!_context.CandidateSkills.Any(cs => cs.CandidateId == loggedInUserId && cs.SkillId == skillId))
                 {
-                    _context.CandidateSkills.Add(new CandidateSkill { CandidateId = loggedInUserId, SkillId = skillId });
+                    var skillName = existingSkills.FirstOrDefault(s => s.SkillId == skillId)?.Skill;
+                    _context.CandidateSkills.Add(new CandidateSkill { CandidateId = loggedInUserId, SkillId = skillId, Skill = skillName  });
                 }
             }
 
@@ -78,6 +80,18 @@ namespace backend.Core.Services
             }
 
             return _mapper.Map<IEnumerable<GetCandidateSkillsDto>>(candidateSkills);
+        }
+
+        public async Task<IEnumerable<GetSkillDto>> GetMySkillsAsync(ClaimsPrincipal User)
+        {
+            var mySkills = await _candidateSkillRepositories.GetMySkills(User);
+
+            if(mySkills is null || !mySkills.Any())
+            {
+                throw new Exception("You haven't added your skills yet.");
+            }
+
+            return _mapper.Map<IEnumerable<GetSkillDto>>(mySkills);
         }
     }
 }

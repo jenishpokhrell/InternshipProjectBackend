@@ -32,7 +32,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetCandidateSkills")]
+        [Route("GetCandidateSkills/{candidateId}")]
         [Authorize]
         public async Task<IActionResult> GetCandidateSKills(string candidateId)
         {
@@ -41,7 +41,16 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        [Route("GetAvaiblableSkills")]
+        [Route("GetMySkills")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> GetMySkills()
+        {
+            var mySkills = await _candidateSkillServices.GetMySkillsAsync(User);
+            return Ok(mySkills);
+        }
+
+        [HttpGet]
+        [Route("GetAvailableSkills")]
         [Authorize]
         public async Task<IActionResult> GetAvailableSkills()
         {

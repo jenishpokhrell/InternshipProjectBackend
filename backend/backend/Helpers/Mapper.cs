@@ -40,6 +40,7 @@ namespace backend.Helpers
             CreateMap<JobApplication, MyJobApplicationsDto>().ReverseMap();
             CreateMap<SavedCandidate, SavedCandidateDto>().ReverseMap();
             CreateMap<Skills, GetSkillDto>().ReverseMap();
+            CreateMap<CandidateSkill, GetSkillDto>().ReverseMap();
             CreateMap<CandidateSkill, GetCandidateSkillsDto>().ReverseMap();
             CreateMap<Resume, GetResumeDto>().ReverseMap();
         }
