@@ -17,6 +17,8 @@ namespace backend.Core.Interfaces
 
         Task<IEnumerable<GetJobDto>> GetAllJobsAsync();
 
+        Task<GetJobDto> GetJobByIdAsync(int id);
+
         Task<GetJobDtoForCandidate> GetJobByIdForCandidatesAsync(int id);
 
         Task<IEnumerable<GetMyJobDto>> GetMyJobsAsync(ClaimsPrincipal User);

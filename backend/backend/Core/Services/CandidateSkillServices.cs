@@ -93,5 +93,41 @@ namespace backend.Core.Services
 
             return _mapper.Map<IEnumerable<GetSkillDto>>(mySkills);
         }
+
+        public async Task<GeneralServiceResponseDto> DeleteSkillAsync(ClaimsPrincipal User, int skillId)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var skill = await _context.CandidateSkills.FirstOrDefaultAsync(s => s.SkillId == skillId);
+
+            if (skill is null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 404,
+                    Message = "Skill not found"
+                };
+            }
+
+            if (skill.CandidateId != loggedInUserId)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 401,
+                    Message = "You are not authorized to delete other candidate skills"
+                };
+            }
+
+            await _candidateSkillRepositories.DeleteSkillById(skillId);
+
+            return new GeneralServiceResponseDto()
+            {
+                IsSuccess = true,
+                StatusCode = 200,
+                Message = "Skill Deleted Successfully."
+            };
+        }
     }
 }

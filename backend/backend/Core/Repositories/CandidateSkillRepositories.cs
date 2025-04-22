@@ -1,4 +1,5 @@
 ﻿using backend.Core.DataContext;
+using backend.Core.DTOs.General;
 using backend.Core.Entities;
 using backend.Core.Interfaces.IRepositories;
 using Dapper;
@@ -18,6 +19,8 @@ namespace backend.Repositories
         {
             _dContext = dContext;
         }
+
+
         public async Task<IEnumerable<CandidateSkill>> GetCandidateSkills(string candidateId)
         {
             var query = "SELECT * FROM CandidateSkills WHERE CandidateId = @CandidateId";
@@ -37,6 +40,15 @@ namespace backend.Repositories
             using(var connection = _dContext.CreateConnection())
             {
                 return await connection.QueryAsync<CandidateSkill>(query, new { loggedInUserId });
+            }
+        }
+        public async Task DeleteSkillById(int skillId)
+        {
+            var query = "DELETE FROM CandidateSkills WHERE SkillId = @skillId";
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, new { skillId });
             }
         }
     }

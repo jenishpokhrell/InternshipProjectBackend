@@ -57,5 +57,14 @@ namespace backend.Controllers
             var skills = await _candidateSkillServices.GetAvailableSkillsAsync();
             return Ok(skills);
         }
+
+        [HttpDelete]
+        [Route("RemoveSkill/{skillId}")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> DeleteSkillById(int skillId)
+        {
+            var skill = await _candidateSkillServices.DeleteSkillAsync(User, skillId);
+            return Ok(skill);
+        }
     }
 }

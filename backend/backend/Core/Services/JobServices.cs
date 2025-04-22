@@ -281,5 +281,12 @@ namespace backend.Core.Services
 
             return _mapper.Map<GetMyJobDto>(job);
         }
+
+        public async Task<GetJobDto> GetJobByIdAsync(int id)
+        {
+            var jobs = await _jobrepositories.GetJobById(id);
+
+            return _mapper.Map<GetJobDto>(jobs);
+        }
     }
 }

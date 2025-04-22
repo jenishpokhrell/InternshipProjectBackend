@@ -523,19 +523,30 @@ namespace backend.Core.Services
                     }
 
                     var jobs = await _context.Jobs.Where(c => c.EmployerId == id).ToListAsync();
+                    var savedCandidates = await _context.SavedCandidates.Where(sc => sc.EmployerId == id || sc.CandidateId == id).ToListAsync();
                     var projects = await _context.Projects.Where(c => c.CandidateId == id).ToListAsync();
                     var academic = await _context.Academics.Where(c => c.CandidateId == id).FirstOrDefaultAsync();
                     var experiences = await _context.Experiences.Where(e => e.UserId == id).ToListAsync();
                     var jobApplications = await _context.JobApplications.Where(ja => ja.CandidateId == id).ToListAsync();
+                    var resumes = await _context.Resumes.Where(r => r.CandidateId == id).FirstOrDefaultAsync();
+                    var candidateSkills = await _context.CandidateSkills.Where(cs => cs.CandidateId == id).ToListAsync();
+                    var savedJobs = await _context.SavedJobs.Where(sj => sj.CandidateId == id).ToListAsync();
 
                     _context.Users.Remove(user);
                     _context.Jobs.RemoveRange(jobs);
                     _context.Projects.RemoveRange(projects);
                     _context.Experiences.RemoveRange(experiences);
                     _context.JobApplications.RemoveRange(jobApplications);
+                    _context.CandidateSkills.RemoveRange(candidateSkills);
+                    _context.SavedJobs.RemoveRange(savedJobs);
                     if(academic != null)
                     {
                         _context.Academics.Remove(academic);
+                    }
+
+                    if(resumes != null)
+                    {
+                        _context.Resumes.Remove(resumes);   
                     }
 
                     await _context.SaveChangesAsync();

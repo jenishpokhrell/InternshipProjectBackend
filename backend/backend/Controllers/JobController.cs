@@ -69,22 +69,18 @@ namespace backend.Controllers
             return Ok(jobs);
         }
 
-        [HttpPut]
-        [Route("Update-Job/{id}")]
-        [Authorize(Roles = StaticUserRole.EMPLOYER)]
-        public async Task<IActionResult> UpdateJob([FromBody] PostJobDto postJobDto, int id)
+        [HttpGet]
+        [Route("GetJobById/{id}")]
+        [Authorize(Roles = StaticUserRole.ADMIN)]
+        public async Task<IActionResult> GetJobById(int id)
         {
-            var updateJob = await _jobServices.UpdateJobAsync(User, postJobDto, id);
-            return Ok(updateJob);
-        }
-        
-        [HttpDelete]
-        [Route("Delete-Job/{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteJob(int id)
-        {
-            var deleteJob = await _jobServices.DeleteJobAsync(User, id);
-            return Ok(deleteJob);
+            var jobs = await _jobServices.GetJobByIdAsync(id);
+            if(jobs is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(jobs);
         }
 
         [HttpGet]
@@ -114,5 +110,25 @@ namespace backend.Controllers
             var job = await _jobServices.GetMyJobByIdAsync(User, id);
             return Ok(job);
         }
+
+        [HttpPut]
+        [Route("Update-Job/{id}")]
+        [Authorize(Roles = StaticUserRole.EMPLOYER)]
+        public async Task<IActionResult> UpdateJob([FromBody] PostJobDto postJobDto, int id)
+        {
+            var updateJob = await _jobServices.UpdateJobAsync(User, postJobDto, id);
+            return Ok(updateJob);
+        }
+        
+        [HttpDelete]
+        [Route("Delete-Job/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteJob(int id)
+        {
+            var deleteJob = await _jobServices.DeleteJobAsync(User, id);
+            return Ok(deleteJob);
+        }
+
+        
     }
 }

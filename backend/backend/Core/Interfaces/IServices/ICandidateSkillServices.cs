@@ -17,5 +17,7 @@ namespace backend.Core.Interfaces
         Task<IEnumerable<GetSkillDto>> GetMySkillsAsync(ClaimsPrincipal User);
 
         Task<GeneralServiceResponseDto> AddCandidateSkillAsync(ClaimsPrincipal User, AddCandidateSkillDto addCandidateSkillDto);
+
+        Task<GeneralServiceResponseDto> DeleteSkillAsync(ClaimsPrincipal User, int skillId);
     }
 }

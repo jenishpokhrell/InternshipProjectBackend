@@ -1,4 +1,5 @@
-﻿using backend.Core.Entities;
+﻿using backend.Core.DTOs.General;
+using backend.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace backend.Core.Interfaces.IRepositories
         Task<IEnumerable<CandidateSkill>> GetCandidateSkills(string candidateId);
 
         Task<IEnumerable<CandidateSkill>> GetMySkills(ClaimsPrincipal User);
+
+        Task DeleteSkillById(int skillId);
     }
 }
