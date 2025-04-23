@@ -22,5 +22,6 @@ namespace backend.Core.DTOs.Job
         public bool IsActive { get; set; }
         public string EmployerId { get; set; }
         public string PostedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
