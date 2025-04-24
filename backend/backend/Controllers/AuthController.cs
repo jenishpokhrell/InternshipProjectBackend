@@ -52,15 +52,8 @@ namespace backend.Controllers
             [FromForm] IFormFile profilePhoto,
             [FromServices] CloudinaryServices cloudinaryServices)
         {
-            if (ModelState.IsValid)
-            {
-                var createUser = await _authServices.RegisterAsync(registerDto, profilePhoto, cloudinaryServices);
-                return StatusCode(createUser.StatusCode, createUser.Message);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+            var createUser = await _authServices.RegisterAsync(registerDto, profilePhoto, cloudinaryServices);
+            return Ok(createUser);
         }
 
         [HttpPost]
@@ -72,6 +65,12 @@ namespace backend.Controllers
             {
                 return Unauthorized("Invalid Credentials.");
             }
+
+            if (user is not null && user.UserInfo.isApproved == false)
+            {
+                return StatusCode(403, new { message = "You have not been approved by admin yet." });
+            }
+
             return Ok(user);
         }
 

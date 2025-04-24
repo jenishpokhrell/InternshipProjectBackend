@@ -136,7 +136,7 @@ namespace backend.Core.Services
             {
                 return new GeneralServiceResponseDto()
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     StatusCode = 201,
                     Message = "Username Already Exists"
                 };
@@ -247,10 +247,7 @@ namespace backend.Core.Services
             if (!isPasswordCorrect)
                 return null;
 
-            if (user.isApproved != true)
-            {
-                throw new Exception("You have not been approved by admin yet.");
-            }
+           
 
             var newToken = await GenerateJWTToken(user);
             var roles = await _userManager.GetRolesAsync(user);
@@ -523,7 +520,7 @@ namespace backend.Core.Services
                     }
 
                     var jobs = await _context.Jobs.Where(c => c.EmployerId == id).ToListAsync();
-                    var savedCandidates = await _context.SavedCandidates.Where(sc => sc.EmployerId == id || sc.CandidateId == id).ToListAsync();
+                    var savedCandidates = await _context.SavedCandidates.Where(sc => sc.EmployerId == id && sc.CandidateId == id).ToListAsync();
                     var projects = await _context.Projects.Where(c => c.CandidateId == id).ToListAsync();
                     var academic = await _context.Academics.Where(c => c.CandidateId == id).FirstOrDefaultAsync();
                     var experiences = await _context.Experiences.Where(e => e.UserId == id).ToListAsync();

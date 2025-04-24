@@ -219,9 +219,12 @@ namespace backend.Core.Services
                 throw new Exception("Active jobs cant be deleted. Employer need to disable the job.");
             }
 
+
             else
             {
+                var jobApplications = await _jobrepositories.GetJobApplicationsByJobIdAsync(id);            
                 await _jobrepositories.DeleteJobAsync(id);
+                _context.RemoveRange(jobApplications);
             }
 
 
