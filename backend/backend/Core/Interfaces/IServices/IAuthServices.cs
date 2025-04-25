@@ -14,8 +14,6 @@ namespace backend.Core.Interfaces
     {
         Task<GeneralServiceResponseDto> SeedRolesAsync();
 
-        Task<GeneralServiceResponseDto> SeedAdminAsync(AdminDto adminDto);
-
         Task<GeneralServiceResponseDto> RegisterAsync(RegisterDto registerDto, IFormFile profilePhoto, CloudinaryServices cloudinaryServices);
 
         Task<LoginServiceResponseDto> LoginAsync(LoginDto loginDto);

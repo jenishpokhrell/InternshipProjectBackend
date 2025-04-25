@@ -76,58 +76,6 @@ namespace backend.Core.Services
             };
         }
 
-        public async Task<GeneralServiceResponseDto> SeedAdminAsync(AdminDto adminDto)
-        {
-            var isAdminExists = await _userManager.FindByNameAsync(adminDto.Username);
-            if (isAdminExists is not null)
-            {
-                return new GeneralServiceResponseDto()
-                {
-                    IsSuccess = true,
-                    StatusCode = 201,
-                    Message = "Admin Already Exists"
-                };
-            }
-
-            var adminUser = new ApplicationUser()
-            {
-                UserName = adminDto.Username
-            };
-
-            var result = await _userManager.CreateAsync(adminUser, adminDto.Password);
-            if (!result.Succeeded)
-            {
-                return new GeneralServiceResponseDto()
-                {
-                    IsSuccess = false,
-                    StatusCode = 400,
-                    Message = "Something went wrong while creating admin."
-                };
-            }
-
-            if (!await _roleManager.RoleExistsAsync(StaticUserRole.ADMIN))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(StaticUserRole.ADMIN));
-            }
-
-            await _userManager.AddToRoleAsync(adminUser, StaticUserRole.ADMIN);
-
-            var admin = new Admin()
-            {
-                UserId = adminUser.Id
-            };
-
-            _context.Admin.Add(admin);
-            await _context.SaveChangesAsync();
-
-            return new GeneralServiceResponseDto()
-            {
-                IsSuccess = true,
-                StatusCode = 200,
-                Message = "Admin Created Successfully."
-            };
-        }
-
         //Registering user
         public async Task<GeneralServiceResponseDto> RegisterAsync(RegisterDto registerDto, IFormFile profilePhoto, CloudinaryServices cloudinaryServices)
         {

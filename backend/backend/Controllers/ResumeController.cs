@@ -41,5 +41,18 @@ namespace backend.Controllers
             var resume = await _resumeServices.GetResumeByCandidateIdAsync(candidateId);
             return Ok(resume);
         }
+
+        [HttpGet]
+        [Route("GetMyResume")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> GetMyResume()
+        {
+            var myResume = await _resumeServices.GetMyResumeAsync(User);
+            if(myResume is null)
+            {
+                return NotFound("You haven't added your resume yet.");
+            }
+            return Ok(myResume);
+        }
     }
 }

@@ -14,5 +14,9 @@ namespace backend.Core.Interfaces
         Task<GeneralServiceResponseDto> AddorUpdateResumeAsync(ClaimsPrincipal User, ResumeDto resumeDto, CloudinaryServices cloudinaryServices);
 
         Task<GetResumeDto> GetResumeByCandidateIdAsync(string candidateId);
+
+        Task<GetResumeDto> GetMyResumeAsync(ClaimsPrincipal User);
+
+        //Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User);
     }
 }

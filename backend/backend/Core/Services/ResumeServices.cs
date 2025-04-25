@@ -73,6 +73,12 @@ namespace backend.Core.Services
                 StatusCode = 200,
                 Message = "Resume Uploaded Successfully.",
             };
+        }  
+
+        public async Task<GetResumeDto> GetMyResumeAsync(ClaimsPrincipal User)
+        {
+            var resume = await _resumeRepositories.GetMyResume(User);
+            return _mapper.Map<GetResumeDto>(resume);
         }
 
         public async Task<GetResumeDto> GetResumeByCandidateIdAsync(string candidateId)
@@ -86,6 +92,15 @@ namespace backend.Core.Services
 
             return _mapper.Map<GetResumeDto>(candidateResume);
         }
+
+       /* public async Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User)
+        {
+            var deleteResume = await _resumeRepositories.DeleteResume(User);
+            return new GeneralServiceResponseDto()
+            {
+
+            };
+        }*/
     }
 }
 

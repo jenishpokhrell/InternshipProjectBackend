@@ -13,7 +13,6 @@ namespace backend.Core.DataContext
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
-        public DbSet<Admin> Admin { get; set; }
         public DbSet<Academic> Academics { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Resume> Resumes { get; set; }
