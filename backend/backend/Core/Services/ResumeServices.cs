@@ -93,14 +93,16 @@ namespace backend.Core.Services
             return _mapper.Map<GetResumeDto>(candidateResume);
         }
 
-       /* public async Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User)
+        public async Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User)
         {
-            var deleteResume = await _resumeRepositories.DeleteResume(User);
+            await _resumeRepositories.DeleteResume(User);
             return new GeneralServiceResponseDto()
             {
-
+                IsSuccess = true,
+                StatusCode = 200,
+                Message = "Resume Deleted Successfully.",
             };
-        }*/
+        }
     }
 }
 

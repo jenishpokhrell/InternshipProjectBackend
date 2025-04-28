@@ -54,5 +54,14 @@ namespace backend.Controllers
             }
             return Ok(myResume);
         }
+
+        [HttpDelete]
+        [Route("DeleteResume")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> DeleteResume()
+        {
+            var resume = await _resumeServices.DeleteResumeAsync(User);
+            return Ok(resume);
+        }
     }
 }

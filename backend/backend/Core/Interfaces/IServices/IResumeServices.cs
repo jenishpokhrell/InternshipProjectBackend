@@ -17,6 +17,6 @@ namespace backend.Core.Interfaces
 
         Task<GetResumeDto> GetMyResumeAsync(ClaimsPrincipal User);
 
-        //Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User);
+        Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User);
     }
 }
