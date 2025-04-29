@@ -14,8 +14,6 @@ namespace backend.Core.Interfaces
     {
         Task<IEnumerable<MyJobApplicationsDto>> GetMyJobApplicationAsync(ClaimsPrincipal User);
 
-        Task<GetJobDtoForCandidate> GetJobDetails();
-
         Task<GeneralServiceResponseDto> UpdateJobApplicationAsync(ClaimsPrincipal User,
             UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id);
     }

@@ -31,6 +31,7 @@ namespace backend.Core.Services
             _skillRepositories = skillRepositories;
         }
 
+        //Method for adding candidate skills
         public async Task<GeneralServiceResponseDto> AddCandidateSkillAsync(ClaimsPrincipal User, AddCandidateSkillDto addCandidateSkillDto)
         {
             var existingSkills = await _context.Skills.Where(s => addCandidateSkillDto.SkillId.Contains(s.SkillId)).ToListAsync();
@@ -64,12 +65,14 @@ namespace backend.Core.Services
             };
         }
 
+        //Method for getting all available skills
         public async Task<IEnumerable<GetSkillDto>> GetAvailableSkillsAsync()
         {
             var skills = await _skillRepositories.GetAllSkills();
             return _mapper.Map<IEnumerable<GetSkillDto>>(skills);
         }
 
+        //Method for getting candidate skills using their Id
         public async Task<IEnumerable<GetCandidateSkillsDto>> GetCandidateSkillsAsync(string candidateId)
         {
             var candidateSkills = await _candidateSkillRepositories.GetCandidateSkills(candidateId);
@@ -82,6 +85,7 @@ namespace backend.Core.Services
             return _mapper.Map<IEnumerable<GetCandidateSkillsDto>>(candidateSkills);
         }
 
+        //Method for getting individual skills
         public async Task<IEnumerable<GetSkillDto>> GetMySkillsAsync(ClaimsPrincipal User)
         {
             var mySkills = await _candidateSkillRepositories.GetMySkills(User);
@@ -94,6 +98,7 @@ namespace backend.Core.Services
             return _mapper.Map<IEnumerable<GetSkillDto>>(mySkills);
         }
 
+        //Method for deleting skill using skillId
         public async Task<GeneralServiceResponseDto> DeleteSkillAsync(ClaimsPrincipal User, int skillId)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

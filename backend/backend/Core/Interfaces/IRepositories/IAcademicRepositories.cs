@@ -1,4 +1,5 @@
-﻿using backend.Core.DTOs.General;
+﻿using backend.Core.DTOs.Academics;
+using backend.Core.DTOs.General;
 using backend.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IAcademicRepositories
     {
-        Task AddAcademics(Academic academics);
+        Task<Academic> AddAcademics(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto);
 
         Task<IEnumerable<Academic>> GetAcademics();
 

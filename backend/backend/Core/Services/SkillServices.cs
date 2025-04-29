@@ -26,6 +26,8 @@ namespace backend.Core.Services
             _mapper = mapper;
             _skillRepositories = skillRepositories;
         }
+
+        //method for adding skills 
         public async Task<GeneralServiceResponseDto> AddSkillsAsync(SkillDto skillDto)
         {
             Skills skill = new Skills()
@@ -44,6 +46,7 @@ namespace backend.Core.Services
             };
         }
 
+        //method for getting all skills
         public async Task<IEnumerable<GetSkillDto>> GetAllSkillsAsync()
         {
             var skills = await _context.Skills.ProjectTo<GetSkillDto>(_mapper.ConfigurationProvider).ToListAsync();
@@ -54,6 +57,7 @@ namespace backend.Core.Services
             return skills;
         }
 
+        //method for getting skill by id
         public async Task<GetSkillDto> GetSkillByIdAsync(int id)
         {
             var skill = await _skillRepositories.GetSkillById(id);
@@ -64,6 +68,7 @@ namespace backend.Core.Services
             return _mapper.Map<GetSkillDto>(skill);
         }
 
+        //method for deleting skill by id
         public async Task<GeneralServiceResponseDto> DeleteSkillAsync(int id)
         {
             var skill = await _skillRepositories.GetSkillById(id);

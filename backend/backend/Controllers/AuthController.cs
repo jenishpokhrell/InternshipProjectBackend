@@ -31,20 +31,6 @@ namespace backend.Controllers
             return StatusCode(seedRoles.StatusCode, seedRoles.Message);
         }
 
-        /*[HttpPost]
-        [Route("SeedAdmin")]
-        public async Task<IActionResult> SeedAdmin([FromBody] AdminDto adminDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var seedAdmin = await _authServices.SeedAdminAsync(adminDto);
-                return StatusCode(seedAdmin.StatusCode, seedAdmin.Message);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
-        }*/
 
         [HttpPost]
         [Route("CreateUser")]
@@ -106,22 +92,6 @@ namespace backend.Controllers
 
         }
 
-        [HttpPut]
-        [Route("Update-User/{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateAsync(string id,
-                    [FromForm] UpdateUserDto updateUserDto,
-                    [FromForm] IFormFile profilePhoto,
-                    [FromServices] CloudinaryServices cloudinaryServices)
-        {
-            var updateUser = await _authServices.UpdateAsync(User, updateUserDto, id, profilePhoto, cloudinaryServices);
-            if (!updateUser.IsSuccess)
-            {
-                return BadRequest();
-            }
-            return Ok(updateUser);
-        }
-
         [HttpGet]
         [Route("GetAllUsers")]
         [Authorize(Roles = StaticUserRole.ADMIN)]
@@ -148,6 +118,24 @@ namespace backend.Controllers
             var employers = await _authServices.GetPendingEmployersAsync();
             return Ok(employers);
         }
+
+        [HttpPut]
+        [Route("Update-User/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAsync(string id,
+                    [FromForm] UpdateUserDto updateUserDto,
+                    [FromForm] IFormFile profilePhoto,
+                    [FromServices] CloudinaryServices cloudinaryServices)
+        {
+            var updateUser = await _authServices.UpdateAsync(User, updateUserDto, id, profilePhoto, cloudinaryServices);
+            if (!updateUser.IsSuccess)
+            {
+                return BadRequest();
+            }
+            return Ok(updateUser);
+        }
+
+       
 
         [HttpPut]
         [Route("ChangePassword/{id}")]

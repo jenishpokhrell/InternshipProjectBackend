@@ -32,6 +32,7 @@ namespace backend.Core.Services
             _projectRepositories = projectRepositories;
         }
 
+        //Method for adding project
         public async Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto)
         {
             Projects projects = new Projects()
@@ -54,6 +55,7 @@ namespace backend.Core.Services
 
         }
 
+        //Method for getting individuals projects
         public async Task<IEnumerable<GetMyProjectDto>> GetMyProjectsAsync(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -65,6 +67,8 @@ namespace backend.Core.Services
             return _mapper.Map<IEnumerable<GetMyProjectDto>>(myProjects);
         }
 
+
+        //Method for getting project by Id
         public async Task<GetProjectDto> GetProjectByIdAsync(ClaimsPrincipal User, int id)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -84,6 +88,20 @@ namespace backend.Core.Services
             return _mapper.Map<GetProjectDto>(project);
         }
 
+        //Method for getting candidates projects by their Id
+        public async Task<IEnumerable<GetProjectDto>> GetProjectsByCandidateIdAsync(string candidateId)
+        {
+            var candidateProjects = await _projectRepositories.GetProjectByCandidateId(candidateId);
+
+            if (candidateProjects is null)
+            {
+                throw new Exception("No work experience found");
+            }
+
+            return _mapper.Map<IEnumerable<GetProjectDto>>(candidateProjects);
+        }
+
+        //Method for updating project
         public async Task<GeneralServiceResponseDto> UpdateProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto, int id)
         {
             var project = await _projectRepositories.GetProjectById(id);
@@ -124,6 +142,7 @@ namespace backend.Core.Services
 
         }
 
+        //Method for deleting project
         public async Task<GeneralServiceResponseDto> DeleteProjectAsync(ClaimsPrincipal User, int id)
         {
             var project = await _context.Projects.FindAsync(id);
@@ -159,16 +178,6 @@ namespace backend.Core.Services
             };
         }
 
-        public async Task<IEnumerable<GetProjectDto>> GetProjectsByCandidateIdAsync(string candidateId)
-        {
-            var candidateProjects = await _projectRepositories.GetProjectByCandidateId(candidateId);
-
-            if(candidateProjects is null)
-            {
-                throw new Exception("No work experience found");
-            }
-
-            return _mapper.Map<IEnumerable<GetProjectDto>>(candidateProjects);
-        }
+        
     }
 }

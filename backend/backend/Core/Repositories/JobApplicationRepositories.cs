@@ -18,12 +18,8 @@ namespace backend.Repositories
         {
             _dContext = dContext;
         }
-
-        public Task<Job> GetJobDetails()
-        {
-            throw new NotImplementedException();
-        }
-
+        
+        //Repo method for getting candidates job applications
         public async Task<IEnumerable<JobApplication>> GetMyJobApplications(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

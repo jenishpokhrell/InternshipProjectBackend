@@ -21,6 +21,7 @@ namespace backend.Repositories
             _dContext = dContext;
         }
 
+        //Repo method for getting all users
         public async Task<IEnumerable<ApplicationUser>> GetAllUsers()
         {
             var query = "SELECT * FROM Users";
@@ -31,6 +32,7 @@ namespace backend.Repositories
             }
         }
 
+        //Repo method for getting user by id
         public async Task<ApplicationUser> GetUserById(string id)
         {
             var query = "SELECT * FROM Users WHERE Id = @Id";

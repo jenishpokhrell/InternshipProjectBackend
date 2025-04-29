@@ -20,7 +20,7 @@ namespace backend.Repositories
             _dContext = dContext;
         }
 
-
+        //Repo method for getting candidate skills using their id
         public async Task<IEnumerable<CandidateSkill>> GetCandidateSkills(string candidateId)
         {
             var query = "SELECT * FROM CandidateSkills WHERE CandidateId = @CandidateId";
@@ -31,6 +31,7 @@ namespace backend.Repositories
             }
         }
 
+        //Repo method for getting individuals skills using their id
         public async Task<IEnumerable<CandidateSkill>> GetMySkills(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -42,6 +43,8 @@ namespace backend.Repositories
                 return await connection.QueryAsync<CandidateSkill>(query, new { loggedInUserId });
             }
         }
+
+        //Repo method for deleting individuals skills by id
         public async Task DeleteSkillById(int skillId)
         {
             var query = "DELETE FROM CandidateSkills WHERE SkillId = @skillId";

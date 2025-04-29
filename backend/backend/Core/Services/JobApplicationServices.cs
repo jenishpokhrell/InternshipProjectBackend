@@ -30,11 +30,7 @@ namespace backend.Core.Services
             _jobApplicationRespositories = jobApplicationRespositories;
         }
 
-        public Task<GetJobDtoForCandidate> GetJobDetails()
-        {
-            throw new NotImplementedException();
-        }
-
+        //Service method for getting individuals job applications
         public async Task<IEnumerable<MyJobApplicationsDto>> GetMyJobApplicationAsync(ClaimsPrincipal User)
         {
             var jobApplications = await _jobApplicationRespositories.GetMyJobApplications(User);
@@ -45,6 +41,7 @@ namespace backend.Core.Services
             return _mapper.Map<IEnumerable<MyJobApplicationsDto>>(jobApplications);
         }
 
+        //Service method for updating job applications status by employer
         public async Task<GeneralServiceResponseDto> UpdateJobApplicationAsync(ClaimsPrincipal User, 
             UpdateJobApplicationStatusDto updateJobApplicationStatusDto, int id)
         {
@@ -82,12 +79,24 @@ namespace backend.Core.Services
                 };
             }
 
+            var savedCandidates = await _context.SavedCandidates.FirstOrDefaultAsync(sc => sc.JobId == jobApplication.JobId && sc.CandidateId == jobApplication.CandidateId);
+
+            if(savedCandidates != null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 400,
+                    Message = "You've already shortlisted this candidate."
+                };
+            }
+
             if(updateJobApplicationStatusDto.JobStatus != "Shortlisted" && updateJobApplicationStatusDto.JobStatus != "Rejected")
             {
                 return new GeneralServiceResponseDto()
                 {
                     IsSuccess = false,
-                    StatusCode = 404,
+                    StatusCode = 400,
                     Message = "Invalid Job Status. Should be either 'Shortlisted' or 'Rejected'"
                 };
             }

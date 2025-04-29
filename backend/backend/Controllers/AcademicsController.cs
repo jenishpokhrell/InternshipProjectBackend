@@ -22,6 +22,20 @@ namespace backend.Controllers
             _academicServices = academicServices;
         }
 
+        [HttpPost]
+        [Route("Add-Academics")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> AddAcademicAsync([FromBody] AddAcademicsDto addAcademicDto)
+        {
+            var addAcademics = await _academicServices.AddAcademicAsync(User, addAcademicDto);
+            if (!addAcademics.IsSuccess)
+            {
+                return Unauthorized("Only candidate can add academic experience");
+            }
+            return Ok(addAcademics);
+        }
+
+
         [HttpGet]
         [Route("GetMyAcademics")]
         [Authorize]
@@ -58,19 +72,7 @@ namespace backend.Controllers
             return Ok(academic);
         }
 
-        [HttpPost]
-        [Route("Add-Academics")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> AddAcademicAsync([FromBody] AddAcademicsDto addAcademicDto)
-        {
-            var addAcademics = await _academicServices.AddAcademicAsync(User,addAcademicDto);
-            if (!addAcademics.IsSuccess)
-            {
-                return Unauthorized("Only candidate can add academic experience");
-            }
-            return Ok(addAcademics);
-        }
-
+        
 
         [HttpPut]
         [Route("UpdateAcademics/{id}")]

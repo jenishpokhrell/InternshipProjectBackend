@@ -27,6 +27,7 @@ namespace backend.Core.Services
             _mapper = mapper;
         }
 
+        //Method to save jobs
         public async Task<GeneralServiceResponseDto> SaveJobAsync(ClaimsPrincipal User, int jobId)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -73,6 +74,8 @@ namespace backend.Core.Services
             };
         }
 
+
+        //method for getting individuals saved jobs 
         public async Task<IEnumerable<GetJobDtoForCandidate>> GetMySavedJobsAsync(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -82,6 +85,8 @@ namespace backend.Core.Services
             return savedJobs;
         }
 
+
+        //method for getting saved job by id
         public async Task<GetJobDtoForCandidate> GetSavedJobByIdAsync(ClaimsPrincipal User, int jobId)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -90,6 +95,8 @@ namespace backend.Core.Services
             return savedJob;
         }
 
+
+        //method for deleting saved jobs or unsaving the jobs
         public async Task<GeneralServiceResponseDto> UnsaveJobsAsync(ClaimsPrincipal User, int jobId)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -26,6 +26,7 @@ using backend.Core.Interfaces.IRepositories;
 using backend.Repositories;
 using backend.Core.Interfaces.IServices;
 using backend.Core.Repositories;
+using backend.Helpers;
 
 namespace backend
 {
@@ -91,6 +92,7 @@ namespace backend
 
             services.AddSingleton<CloudinaryServices>();
             services.AddSingleton<DapperContext>();
+            services.AddScoped<GenerateJWTToken>();
 
             services.AddAutoMapper(typeof(Startup));
 

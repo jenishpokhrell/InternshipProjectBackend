@@ -18,8 +18,6 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId);
 
-        Task ApplyForJobAsync(ClaimsPrincipal User, int id);
-
         Task UpdateJob(Job job);
 
         Task DeleteJobAsync(int id);

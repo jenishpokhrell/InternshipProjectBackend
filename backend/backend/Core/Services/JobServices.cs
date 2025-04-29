@@ -34,7 +34,7 @@ namespace backend.Core.Services
             _mapper = mapper;
         }
 
-        //Posting job
+        //Method Posting job
         public async Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, PostJobDto postJobDto)
         {
             Job job = new Job()
@@ -66,6 +66,7 @@ namespace backend.Core.Services
             };
         }
 
+        //Method for applying for job
         public async Task<GeneralServiceResponseDto> ApplyForJobAsync(ClaimsPrincipal User, int id)
         {
             var job = await _jobrepositories.GetJobById(id);
@@ -145,6 +146,64 @@ namespace backend.Core.Services
         {
             var jobs = await _jobrepositories.GetAllJobsAsync();
             return _mapper.Map<IEnumerable<GetJobDto>>(jobs);
+        }
+
+        // Getting job by Id candidate to view
+        public async Task<GetJobDtoForCandidate> GetJobByIdForCandidatesAsync(int id)
+        {
+            var job = await _jobrepositories.GetJobById(id);
+            if (job is null)
+            {
+                throw new NullReferenceException("The job doesn't exist.");
+            }
+
+            return _mapper.Map<GetJobDtoForCandidate>(job);
+        }
+
+        //Getting all the jobs posted by employers to view their jobs
+        public async Task<IEnumerable<GetMyJobDto>> GetMyJobsAsync(ClaimsPrincipal User)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var jobs = await _jobrepositories.GetAllJobsAsync();
+            var myjobs = jobs.Where(j => j.EmployerId == loggedInUserId).ToList();
+            if (myjobs is null)
+            {
+                throw new Exception("You haven't posted any jobs yet.");
+            }
+
+            foreach (var job in myjobs)
+            {
+                var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
+                job.JobApplications = applications.ToList();
+            }
+            return _mapper.Map<IEnumerable<GetMyJobDto>>(myjobs);
+        }
+
+        //getting a single job for employer to view 
+        public async Task<GetMyJobDto> GetMyJobByIdAsync(ClaimsPrincipal User, int id)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var jobs = await _jobrepositories.GetAllJobsAsync();
+            var job = jobs.Where(j => j.Id == id).FirstOrDefault();
+            if (job is null)
+                throw new KeyNotFoundException("Job doesn't exist.");
+
+            if (job.EmployerId != loggedInUserId)
+                throw new UnauthorizedAccessException("You are not authorized to access this job posting.");
+
+            var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
+            job.JobApplications = applications.ToList();
+
+
+            return _mapper.Map<GetMyJobDto>(job);
+        }
+
+        //Getting job by Id
+        public async Task<GetJobDto> GetJobByIdAsync(int id)
+        {
+            var jobs = await _jobrepositories.GetJobById(id);
+
+            return _mapper.Map<GetJobDto>(jobs);
         }
 
         //Updating the jobs
@@ -236,60 +295,6 @@ namespace backend.Core.Services
             };
         }
 
-        // Getting job by Id candidate to view
-        public async Task<GetJobDtoForCandidate> GetJobByIdForCandidatesAsync(int id)
-        {
-            var job = await _jobrepositories.GetJobById(id);
-            if(job is null)
-            {
-                throw new NullReferenceException("The job doesn't exist.");
-            }
-
-            return _mapper.Map<GetJobDtoForCandidate>(job);
-        }
-
-        //Getting all the jobs posted by employers to view their jobs
-        public async Task<IEnumerable<GetMyJobDto>> GetMyJobsAsync(ClaimsPrincipal User)
-        {
-            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var jobs = await _jobrepositories.GetAllJobsAsync();
-            var myjobs = jobs.Where(j => j.EmployerId == loggedInUserId).ToList();
-            if (myjobs is null)
-            {
-                throw new Exception("You haven't posted any jobs yet.");
-            }
-
-            foreach (var job in myjobs){
-                var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
-                job.JobApplications = applications.ToList();
-            }
-            return _mapper.Map<IEnumerable<GetMyJobDto>>(myjobs);
-        }
-
-        //getting a single job for employer to view 
-        public async Task<GetMyJobDto> GetMyJobByIdAsync(ClaimsPrincipal User, int id)
-        {
-            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var jobs = await _jobrepositories.GetAllJobsAsync();
-            var job = jobs.Where(j => j.Id == id).FirstOrDefault();
-            if (job is null)
-                throw new KeyNotFoundException("Job doesn't exist.");
-
-            if (job.EmployerId != loggedInUserId)
-                throw new UnauthorizedAccessException("You are not authorized to access this job posting.");
-
-            var applications = await _jobrepositories.GetJobApplicationsByJobIdAsync(job.Id);
-            job.JobApplications = applications.ToList();
-
-
-            return _mapper.Map<GetMyJobDto>(job);
-        }
-
-        public async Task<GetJobDto> GetJobByIdAsync(int id)
-        {
-            var jobs = await _jobrepositories.GetJobById(id);
-
-            return _mapper.Map<GetJobDto>(jobs);
-        }
+        
     }
 }

@@ -28,6 +28,7 @@ namespace backend.Core.Services
             _cloudinary = new Cloudinary(account);
         }
 
+        //Method for uploading image on cloud
         public async Task<string> UploadImageAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -58,6 +59,7 @@ namespace backend.Core.Services
             return uploadResult.SecureUrl.AbsoluteUri;
         }
 
+        //Method for uploading file on cloud
         public async Task<string> UploadResumeAsync(IFormFile file)
         {
             var allowedTypes = new List<string>
@@ -81,13 +83,13 @@ namespace backend.Core.Services
             {
                 File = new FileDescription(file.FileName, stream),
                 PublicId = "resumes/" + Guid.NewGuid().ToString(),
-                //ResourceType = "raw"
             };
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
             return uploadResult.SecureUrl.AbsoluteUri;
         }
 
+        //Extracting public Id of the uploaded image or file
         public string GetPublicId(string url)
         {
             var uri = new Uri(url);
@@ -95,6 +97,7 @@ namespace backend.Core.Services
             return Path.GetFileName(path);
         }
 
+        //Deleting file from the cloud
         public async Task<bool> DeleteFileAsync(string fileUrl)
         {
             if (string.IsNullOrEmpty(fileUrl)) return false;

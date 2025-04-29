@@ -23,6 +23,8 @@ namespace backend.Core.Services
             _mapper = mapper;
             _savedCandidateRepositories = savedCandidateRepositories;
         }
+
+        //methhod for getting shortlisted candidates by employer
         public async Task<IEnumerable<SavedCandidateDto>> GetSavedCandidateAsync(ClaimsPrincipal User)
         {
             var savedCandidates = await _savedCandidateRepositories.GetSavedCandidates(User);

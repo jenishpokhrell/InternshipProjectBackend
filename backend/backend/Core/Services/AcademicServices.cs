@@ -26,9 +26,11 @@ namespace backend.Core.Services
             _mapper = mapper;
             _academicrepositories = academicRepositories;
         }
-        public async Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicDto)
+
+        //Adding new academic
+        public async Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto)
         {
-            var academics = new Academic()
+            /*var academics = new Academic()
             {
                 InstitutionName = addAcademicDto.InstitutionName,
                 Stream = addAcademicDto.Stream,
@@ -37,9 +39,9 @@ namespace backend.Core.Services
                 StartYear = addAcademicDto.StartYear,
                 GraduationYear = addAcademicDto.GraduationYear,
                 CandidateId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            };
+            };*/
 
-            await _academicrepositories.AddAcademics(academics);
+            await _academicrepositories.AddAcademics(User, addAcademicsDto);
 
             return new GeneralServiceResponseDto()
             {
@@ -49,20 +51,18 @@ namespace backend.Core.Services
             };
         }
 
+
+        //Method for Getting all academics
         public async Task<IEnumerable<GetAllAcademicsDto>> GetAcademicsAsync()
         {
             var academics = await _academicrepositories.GetAcademics();
             return _mapper.Map<IEnumerable<GetAllAcademicsDto>>(academics);
         }
 
+        //Method for getting academic by Id
         public async Task<GetAcademicsDto> GetAcademicsByIdAsync(int id)
         {
             var academic = await _academicrepositories.GetAcademicById(id);
-/*
-            if(academic.CandidateId != loggedInUserId)
-            {
-                throw new UnauthorizedAccessException("You are not authorized to access this academics.");
-            }*/
 
             if(academic is null)
             {
@@ -72,6 +72,7 @@ namespace backend.Core.Services
             return _mapper.Map<GetAcademicsDto>(academic);
         }
 
+        //Method for getting individuals academic
         public async Task<GetAcademicsDto> GetMyAcademicsAsync(ClaimsPrincipal User)
         {
             var academic = await _academicrepositories.GetMyAcademic(User);
@@ -83,6 +84,21 @@ namespace backend.Core.Services
             return _mapper.Map<GetAcademicsDto>(academic);
         }
 
+        //Method for getting candidates academic experience by Candidate Ids
+        public async Task<GetAcademicsDto> GetAcademicsByCandidateIdAsync(string candidateId)
+        {
+            var candidateAcademics = await _academicrepositories.GetAcademicsByCandidateId(candidateId);
+
+            if (candidateAcademics is null)
+            {
+                throw new Exception("Candidate hasn't added any academics yet.");
+            }
+
+            return _mapper.Map<GetAcademicsDto>(candidateAcademics);
+        }
+
+
+        //Method for updating individuals academic
         public async Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto, int id)
         {
             var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -125,6 +141,7 @@ namespace backend.Core.Services
             };
         }
 
+        //Method for deleting academic
         public async Task<GeneralServiceResponseDto> DeleteAcademicsAsync(ClaimsPrincipal User, int id)
         {
             var loggedinInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -148,18 +165,6 @@ namespace backend.Core.Services
                 StatusCode = 200,
                 Message = "Academics removed successfully."
             };
-        }
-
-        public async Task<GetAcademicsDto> GetAcademicsByCandidateIdAsync(string candidateId)
-        {
-            var candidateAcademics = await _academicrepositories.GetAcademicsByCandidateId(candidateId);
-
-            if(candidateAcademics is null)
-            {
-                throw new Exception("Candidate hasn't added any academics yet.");
-            }
-
-            return _mapper.Map<GetAcademicsDto>(candidateAcademics);
-        }
+        }     
     }
 }

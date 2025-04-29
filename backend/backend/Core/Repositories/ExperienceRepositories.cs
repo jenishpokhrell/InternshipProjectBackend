@@ -20,11 +20,15 @@ namespace backend.Repositories
             _context = context;
             _dContext = dContext;
         }
+
+        //Repo method for adding work experience
         public async Task AddExperience(Experience experience)
         {
             await _context.Experiences.AddAsync(experience);
             await _context.SaveChangesAsync();
         }
+
+        //Repo method for getting individuals work experience
         public async Task<IEnumerable<Experience>> GetMyExperiencesAsync(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,7 +40,7 @@ namespace backend.Repositories
             }
         }
 
-
+        //Repo method for getting work experience by id
         public async Task<Experience> GetExperienceById(int id)
         {
             var query = "SELECT * FROM Experiences WHERE ExperienceId = @Id";
@@ -48,6 +52,29 @@ namespace backend.Repositories
         }
 
 
+        //Repo method for getting work all experiences
+        public async Task<IEnumerable<Experience>> GetAllExperiences()
+        {
+            var query = "SELECT * FROM Experiences";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<Experience>(query);
+            }
+        }
+
+        //Repo method for getting candidates experiences by their id
+        public async Task<IEnumerable<Experience>> GetExperienceByCandidateId(string candidateId)
+        {
+            var query = "SELECT * FROM Experiences WHERE UserId = @candidateId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryAsync<Experience>(query, new { candidateId });
+            }
+        }
+
+        //Repo method updating work experience
         public async Task UpdateExperienceAsync(Experience experience)
         {
             /*var query = "UPDATE Experiences SET JobTitle = @JobTitle," +
@@ -65,6 +92,8 @@ namespace backend.Repositories
             _context.Experiences.Update(experience);
             await _context.SaveChangesAsync();
         }
+
+        //Repo method for deleting experience by id
         public async Task DeleteExperienceAsync(int id)
         {
             var query = "DELETE FROM Experiences WHERE ExperienceId = @Id";
@@ -75,24 +104,6 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<IEnumerable<Experience>> GetAllExperiences()
-        {
-            var query = "SELECT * FROM Experiences";
-
-            using (var connection = _dContext.CreateConnection())
-            {
-                return await connection.QueryAsync<Experience>(query);
-            }
-        }
-
-        public async Task<IEnumerable<Experience>> GetExperienceByCandidateId(string candidateId)
-        {
-            var query = "SELECT * FROM Experiences WHERE UserId = @candidateId";
-
-            using (var connection = _dContext.CreateConnection())
-            {
-                return await connection.QueryAsync<Experience>(query, new { candidateId });
-            }
-        }
+        
     }
 }

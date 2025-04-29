@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using System.Security.Claims;
+using backend.Core.DTOs.Academics;
+using System.Data;
 
 namespace backend.Repositories
 {
@@ -22,12 +24,47 @@ namespace backend.Repositories
             _context = context;
             _dContext = dContext;
         }
-        public async Task AddAcademics(Academic academics)
+
+        //Repo method for ading academic
+        public async Task<Academic> AddAcademics(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto)
         {
-            await _context.Academics.AddAsync(academics);
-            await _context.SaveChangesAsync();   
+            var candidateId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var query = "INSERT INTO Academics (InstitutionName, Stream, StartYear, GraduationYear, DegreeType, CurrentSemester, CandidateId) " +
+                "VALUES (@InstitutionName, @Stream, @StartYear, @GraduationYear, @DegreeType, @CurrentSemester, @candidateId) " +
+                "SELECT CAST(SCOPE_IDENTITY() AS int)";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("InstitutionName", addAcademicsDto.InstitutionName, DbType.String);
+            parameters.Add("Stream", addAcademicsDto.Stream, DbType.String);
+            parameters.Add("StartYear", addAcademicsDto.StartYear, DbType.String);
+            parameters.Add("GraduationYear", addAcademicsDto.GraduationYear, DbType.String);
+            parameters.Add("DegreeType", addAcademicsDto.DegreeType, DbType.String);
+            parameters.Add("CurrentSemester", addAcademicsDto.CurrentSemester, DbType.String);
+            parameters.Add("CandidateId", candidateId, DbType.String);
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                var id = await connection.QuerySingleAsync<int>(query, parameters);
+                var addAcademics = new Academic
+                {
+                    Id = id,
+                    InstitutionName = addAcademicsDto.InstitutionName,
+                    Stream = addAcademicsDto.Stream,
+                    DegreeType = addAcademicsDto.DegreeType,
+                    CurrentSemester = addAcademicsDto.CurrentSemester,
+                    StartYear = addAcademicsDto.StartYear,
+                    GraduationYear = addAcademicsDto.GraduationYear,
+                    CandidateId = candidateId
+                };
+
+                return addAcademics;
+            }
+            /*await _context.Academics.AddAsync(academics);
+            await _context.SaveChangesAsync();  */
         }
 
+        //Repo method for getting academic by id
         public async Task<Academic> GetAcademicById(int id)
         {
             var query = "SELECT * FROM Academics WHERE Id = @Id";
@@ -38,6 +75,7 @@ namespace backend.Repositories
             }
         }
 
+        //Repo method for getting all academics
         public async Task<IEnumerable<Academic>> GetAcademics()
         {
             var query = "SELECT * FROM Academics";
@@ -48,6 +86,7 @@ namespace backend.Repositories
             }        
         }
 
+        //Repo method for getting individuals academic experience
         public async Task<Academic> GetMyAcademic(ClaimsPrincipal User)
         {
             var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,12 +98,25 @@ namespace backend.Repositories
             }
         }
 
+        //Repo method for getting candidates academic experience by their id
+        public async Task<Academic> GetAcademicsByCandidateId(string candidateId)
+        {
+            var query = "SELECT * FROM Academics WHERE CandidateId = @candidateId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                return await connection.QueryFirstOrDefaultAsync<Academic>(query, new { candidateId });
+            }
+        }
+
+        //Repo method for updating academic
         public async Task UpdateAcademics(Academic academic)
         {
             _context.Academics.Update(academic);
             await _context.SaveChangesAsync();
         }
 
+        //Repo method for deleting academic by id
         public async Task DeleteAcademic(int id)
         {
             var query = "DELETE FROM Academics WHERE Id = @Id";
@@ -75,14 +127,6 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<Academic> GetAcademicsByCandidateId(string candidateId)
-        {
-            var query = "SELECT * FROM Academics WHERE CandidateId = @candidateId";
-
-            using (var connection = _dContext.CreateConnection())
-            {
-                return await connection.QueryFirstOrDefaultAsync<Academic>(query, new { candidateId });
-            }
-        }
+        
     }   
 }

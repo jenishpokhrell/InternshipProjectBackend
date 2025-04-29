@@ -29,6 +29,8 @@ namespace backend.Core.Services
             _mapper = mapper;
         }
 
+
+        //Method for adding or updating existing resume
         public async Task<GeneralServiceResponseDto> AddorUpdateResumeAsync(ClaimsPrincipal User, ResumeDto resumeDto,
              CloudinaryServices cloudinaryServices)
         {
@@ -75,12 +77,15 @@ namespace backend.Core.Services
             };
         }  
 
+
+        //Method for getting my resume
         public async Task<GetResumeDto> GetMyResumeAsync(ClaimsPrincipal User)
         {
             var resume = await _resumeRepositories.GetMyResume(User);
             return _mapper.Map<GetResumeDto>(resume);
         }
 
+        //Method for getting candidates resume by their id
         public async Task<GetResumeDto> GetResumeByCandidateIdAsync(string candidateId)
         {
             var candidateResume = await _resumeRepositories.GetResumeByCandidateId(candidateId);
@@ -93,6 +98,8 @@ namespace backend.Core.Services
             return _mapper.Map<GetResumeDto>(candidateResume);
         }
 
+
+        //Method for deleting resume
         public async Task<GeneralServiceResponseDto> DeleteResumeAsync(ClaimsPrincipal User)
         {
             await _resumeRepositories.DeleteResume(User);

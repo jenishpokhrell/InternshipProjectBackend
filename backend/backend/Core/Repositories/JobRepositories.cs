@@ -22,12 +22,6 @@ namespace backend.Repositories
             _dContext = dContext;
         }
 
-        public Task ApplyForJobAsync(ClaimsPrincipal User, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public async Task<IEnumerable<Job>> GetAllJobsAsync()
         {
             var query = "SELECT * FROM Jobs";

@@ -24,6 +24,8 @@ namespace backend.Core.Services
             _logRepositories = logRepositories;
         }
 
+
+        //Method for saving new logs
         public async Task SaveNewLog(string Username, string Description)
         {
             var newLog = new Log()
@@ -36,12 +38,14 @@ namespace backend.Core.Services
             await _context.SaveChangesAsync();
         }
 
+        //Method for getting all logs
         public async Task<IEnumerable<GetLogDto>> GetLogsAsync()
         {
             var logs = await _logRepositories.GetAllLogs();
             return _mapper.Map<IEnumerable<GetLogDto>>(logs);
         }
 
+        //Method for getting individual logs
         public async Task<IEnumerable<GetLogDto>> GetMyLogsAsync(ClaimsPrincipal User)
         {
             var loggedInUser = User.Identity.Name;

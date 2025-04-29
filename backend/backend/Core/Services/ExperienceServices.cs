@@ -30,6 +30,8 @@ namespace backend.Core.Services
             _mapper = mapper;
             _experienceRepositories = experienceRepositories;
         }
+
+        //Method for adding work experiences
         public async Task<GeneralServiceResponseDto> AddExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto)
         {
             if(!DateTime.TryParseExact(addExperienceDto.From, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
@@ -78,7 +80,7 @@ namespace backend.Core.Services
             };
         }
 
-
+        //Method for getting work experiences using id
         public async Task<GetExperienceDto> GetExperienceByIdAsync(ClaimsPrincipal User, int id)
         {
             var experience = await _experienceRepositories.GetExperienceById(id);
@@ -98,6 +100,7 @@ namespace backend.Core.Services
             return _mapper.Map<GetExperienceDto>(experience);
         }
 
+        //Method for getting individual work experiences
         public async Task<IEnumerable<GetExperienceDto>> GetMyExperiencesAsync(ClaimsPrincipal User)
         {
             var experiences = await _experienceRepositories.GetMyExperiencesAsync(User);
@@ -109,6 +112,28 @@ namespace backend.Core.Services
             return _mapper.Map<IEnumerable<GetExperienceDto>>(experiences);
         }
 
+        //Method for getting all work experiences
+        public async Task<IEnumerable<GetExperienceDto>> GetAllExperiencesAsync()
+        {
+            var experiences = await _experienceRepositories.GetAllExperiences();
+
+            return _mapper.Map<IEnumerable<GetExperienceDto>>(experiences);
+        }
+
+        //Method for getting candidates work experiences using their ID
+        public async Task<IEnumerable<GetExperienceDto>> GetExperienceByCandidateIdAsync(string candidateId)
+        {
+            var candidateExperiences = await _experienceRepositories.GetExperienceByCandidateId(candidateId);
+
+            if (candidateExperiences is null)
+            {
+                throw new Exception("Candidate hasn't added any academics yet.");
+            }
+
+            return _mapper.Map<IEnumerable<GetExperienceDto>>(candidateExperiences);
+        }
+
+        //Method for updating work experiences
         public async Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto, int id)
         {
             if (!DateTime.TryParseExact(addExperienceDto.From, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
@@ -157,10 +182,6 @@ namespace backend.Core.Services
             experience.To = toDate;
             experience.IsCurrentlyWoring = addExperienceDto.To.ToLower() == "present";
 
-            //EF Core for updating experience data
-            /*_context.Entry(experience).State = EntityState.Modified;
-            await _context.SaveChangesAsync();*/
-
             await _experienceRepositories.UpdateExperienceAsync(experience);
 
             return new GeneralServiceResponseDto()
@@ -171,6 +192,7 @@ namespace backend.Core.Services
             };
         }
 
+        //Method for deleting work experiences
         public async Task<GeneralServiceResponseDto> DeleteExperienceAsync(ClaimsPrincipal User, int id)
         {
             var experience = await _experienceRepositories.GetExperienceById(id);
@@ -207,23 +229,6 @@ namespace backend.Core.Services
             };
         }
 
-        public async Task<IEnumerable<GetExperienceDto>> GetAllExperiencesAsync()
-        {
-            var experiences = await _experienceRepositories.GetAllExperiences();
-
-            return _mapper.Map<IEnumerable<GetExperienceDto>>(experiences);
-        }
-
-        public async Task<IEnumerable<GetExperienceDto>> GetExperienceByCandidateIdAsync(string candidateId)
-        {
-            var candidateExperiences = await _experienceRepositories.GetExperienceByCandidateId(candidateId);
-
-            if (candidateExperiences is null)
-            {
-                throw new Exception("Candidate hasn't added any academics yet.");
-            }
-
-            return _mapper.Map<IEnumerable<GetExperienceDto>>(candidateExperiences);
-        }
+        
     }
 }

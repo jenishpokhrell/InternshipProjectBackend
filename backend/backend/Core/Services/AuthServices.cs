@@ -19,6 +19,7 @@ using backend.Core.DTOs.Auth;
 using backend.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using backend.Core.Interfaces.IRepositories;
+using backend.Helpers;
 
 namespace backend.Core.Services
 {
@@ -32,10 +33,11 @@ namespace backend.Core.Services
         private readonly ILogServices _logServices;
         private readonly IMapper _mapper;
         private readonly IAuthRepositories _authRepositories;
+        private readonly GenerateJWTToken _generateToken;
 
         public AuthServices(ApplicationDBContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, IConfiguration configuration, ILogServices logServices, 
-            IMapper mapper, IAuthRepositories authRepositories)
+            IMapper mapper, IAuthRepositories authRepositories, GenerateJWTToken generateToken)
         {
             _context = context;
             _roleManager = roleManager;
@@ -45,6 +47,7 @@ namespace backend.Core.Services
             _logServices = logServices;
             _mapper = mapper;
             _authRepositories = authRepositories;
+            _generateToken = generateToken;
         }
 
         //Seeding roles into the database
@@ -197,7 +200,7 @@ namespace backend.Core.Services
 
            
 
-            var newToken = await GenerateJWTToken(user);
+            var newToken = await _generateToken.GenerateToken(user);
             var roles = await _userManager.GetRolesAsync(user);
             var userInfo = GenerateUserInfo(user, roles);
 
@@ -284,7 +287,7 @@ namespace backend.Core.Services
             if (user is null)
                 return null;
 
-            var newToken = await GenerateJWTToken(user);
+            var newToken = await _generateToken.GenerateToken(user);
             var roles = await _userManager.GetRolesAsync(user);
             var userInfo = GenerateUserInfo(user, roles);
 
@@ -337,7 +340,6 @@ namespace backend.Core.Services
             user.Address = updateUserDto.Address;
             user.Contact= updateUserDto.Contact;
             user.Email = updateUserDto.Email;
-            //user.ProfilePhoto = user.ProfilePhoto;
             user.Gender = updateUserDto.Gender;
             user.JobTitle = updateUserDto.JobTitle;
             user.Years_Of_Experience = updateUserDto.Years_Of_Experience;
@@ -516,47 +518,6 @@ namespace backend.Core.Services
                 }
 
             }
-        }
-
-        //Generating jwt token
-        private async Task<string> GenerateJWTToken(ApplicationUser user)
-        {
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-            };
-
-            if (!userRoles.Contains("ADMIN"))
-            {
-                if (!string.IsNullOrEmpty(user.Firstname))
-                    authClaims.Add(new Claim("Firstname", user.Firstname));
-
-                if (!string.IsNullOrEmpty(user.Lastname))
-                    authClaims.Add(new Claim("Lastname", user.Lastname));
-            }
-
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-
-            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-            var signingCredentials = new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256);
-
-            var tokenObject = new JwtSecurityToken(
-                issuer : _configuration["JWT:ValidIssuer"],
-                audience : _configuration["JWT:ValidAudience"],
-                notBefore : DateTime.Now,
-                expires : DateTime.Now.AddHours(3),
-                claims : authClaims,
-                signingCredentials : signingCredentials
-            );
-            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
-            return token;
-
         }
 
         //Generating user info to return after user logs in

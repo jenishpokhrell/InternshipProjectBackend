@@ -35,15 +35,6 @@ namespace backend.Controllers
             return Ok(project);
         }
 
-        [HttpPut]
-        [Route("Update-Project/{id}")]
-        [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> UpdateProjectAsync([FromBody] AddProjectDto addProjectDto, int id)
-        {
-            var updatedProject = await _projectServices.UpdateProjectAsync(User, addProjectDto, id);
-            return Ok(updatedProject);
-        }
-
         [HttpGet]
         [Route("GetMyProjects")]
         [Authorize]
@@ -69,6 +60,15 @@ namespace backend.Controllers
         {
             var project = await _projectServices.GetProjectsByCandidateIdAsync(candidateId);
             return Ok(project);
+        }
+
+        [HttpPut]
+        [Route("Update-Project/{id}")]
+        [Authorize(Roles = StaticUserRole.CANDIDATE)]
+        public async Task<IActionResult> UpdateProjectAsync([FromBody] AddProjectDto addProjectDto, int id)
+        {
+            var updatedProject = await _projectServices.UpdateProjectAsync(User, addProjectDto, id);
+            return Ok(updatedProject);
         }
 
         [HttpDelete]
