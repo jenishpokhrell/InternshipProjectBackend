@@ -1,4 +1,5 @@
-﻿using backend.Core.DTOs.JobApplication;
+﻿using backend.Core.DTOs.Job;
+using backend.Core.DTOs.JobApplication;
 using backend.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IJobRepositories
     {
-        Task PostJob(Job job);
+        Task<Job> PostJob(ClaimsPrincipal User, PostJobDto postJobDto);
 
         Task<Job> GetJobById(int id);
 
@@ -18,7 +19,7 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId);
 
-        Task UpdateJob(Job job);
+        Task UpdateJob(PostJobDto postJobDto, int id);
 
         Task DeleteJobAsync(int id);
     }

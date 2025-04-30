@@ -35,15 +35,7 @@ namespace backend.Core.Services
         //Method for adding project
         public async Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto)
         {
-            Projects projects = new Projects()
-            {
-                ProjectName = addProjectDto.ProjectName,
-                ProjectDescription = addProjectDto.ProjectDescription,
-                ProjectURL = addProjectDto.ProjectURL,
-                CandidateId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-            };
-
-            await _projectRepositories.AddProject(projects);
+            await _projectRepositories.AddProject(User, addProjectDto);
             await _logServices.SaveNewLog(User.Identity.Name, "Added a new project");
 
             return new GeneralServiceResponseDto()
@@ -52,7 +44,6 @@ namespace backend.Core.Services
                 StatusCode = 200,
                 Message = "Project added successfully"
             };
-
         }
 
         //Method for getting individuals projects
@@ -126,11 +117,7 @@ namespace backend.Core.Services
                 };
             }
 
-            project.ProjectName = addProjectDto.ProjectName;
-            project.ProjectDescription = addProjectDto.ProjectDescription;
-            project.ProjectURL = addProjectDto.ProjectURL;
-            _context.Entry(project).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _projectRepositories.UpdateProjects(addProjectDto, id);
             await _logServices.SaveNewLog(User.Identity.Name, "Updated their project");
 
             return new GeneralServiceResponseDto()
@@ -145,7 +132,7 @@ namespace backend.Core.Services
         //Method for deleting project
         public async Task<GeneralServiceResponseDto> DeleteProjectAsync(ClaimsPrincipal User, int id)
         {
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _projectRepositories.GetProjectById(id);
             if(project is null)
             {
                 return new GeneralServiceResponseDto()
@@ -167,7 +154,7 @@ namespace backend.Core.Services
                 };
             }
 
-            _context.Projects.Remove(project);
+            await _projectRepositories.DeleteProject(id);
             await _context.SaveChangesAsync();
 
             return new GeneralServiceResponseDto()

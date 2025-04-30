@@ -1,9 +1,11 @@
 ﻿using backend.Core.DataContext;
+using backend.Core.DTOs.Projects;
 using backend.Core.Entities;
 using backend.Core.Interfaces.IRepositories;
 using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -20,12 +22,38 @@ namespace backend.Repositories
             _context = context;
             _dContext = dContext;
         }
-        public async Task AddProject(Projects projects)
+
+        //Repo method for adding project
+        public async Task<Projects> AddProject(ClaimsPrincipal User, AddProjectDto addProjectDto)
         {
-            await _context.AddAsync(projects);
-            await _context.SaveChangesAsync();
+            var candidateId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var query = "INSERT INTO Projects (ProjectName, ProjectDescription, ProjectURL, CandidateId) " +
+                "VALUES (@ProjectName, @ProjectDescription, @ProjectURL, @candidateId) " +
+                "SELECT CAST(SCOPE_IDENTITY() AS int)";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("ProjectName", addProjectDto.ProjectName, DbType.String);
+            parameters.Add("ProjectDescription", addProjectDto.ProjectDescription, DbType.String);
+            parameters.Add("ProjectURL", addProjectDto.ProjectURL, DbType.String);
+            parameters.Add("CandidateId", candidateId, DbType.String);
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                var id = await connection.QuerySingleAsync<int>(query, parameters);
+                var addProject = new Projects
+                {
+                    ProjectName = addProjectDto.ProjectName,
+                    ProjectDescription = addProjectDto.ProjectDescription,
+                    ProjectURL = addProjectDto.ProjectURL,
+                    CandidateId = candidateId
+                };
+
+                return addProject;
+            }
         }
 
+        //Repo method for getting all projects
         public async Task<IEnumerable<Projects>> GetAllProjects()
         {
             var query = "SELECT * FROM Projects";
@@ -36,6 +64,7 @@ namespace backend.Repositories
             }
         }
 
+        //Repo method for getting candidates projects using their id
         public async Task<IEnumerable<Projects>> GetProjectByCandidateId(string candidateId)
         {
             var query = "SELECT * FROM Projects WHERE CandidateId = @candidateId";
@@ -45,7 +74,8 @@ namespace backend.Repositories
                 return await connection.QueryAsync<Projects>(query, new { candidateId });
             }
         }
-
+        
+        //Repo method for getting project by id
         public async Task<Projects> GetProjectById(int id)
         {
             var query = "SELECT * FROM Projects WHERE ProjectId = @Id";
@@ -55,5 +85,35 @@ namespace backend.Repositories
                 return await connection.QueryFirstOrDefaultAsync<Projects>(query, new { id });
             }
         }
+
+        //Repo method for updating projects using id
+        public async Task UpdateProjects(AddProjectDto addProjectDto, int id)
+        {
+            var query = "UPDATE Projects SET ProjectName = @ProjectName, ProjectDescription = @ProjectDescription, ProjectURL = @ProjectURL " +
+                "WHERE ProjectId = @ProjectId";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("ProjectId", id, DbType.Int32);
+            parameters.Add("ProjectName", addProjectDto.ProjectName, DbType.String);
+            parameters.Add("ProjectDescription", addProjectDto.ProjectDescription, DbType.String);
+            parameters.Add("ProjectURL", addProjectDto.ProjectURL, DbType.String);
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
+        }
+
+        //Repo method for deleting project by id
+        public async Task DeleteProject(int id)
+        {
+            var query = "DELETE FROM Projects WHERE ProjectId = @ProjectId";
+
+            using (var connection = _dContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, new { id });
+            }
+        }
+
     }
 }

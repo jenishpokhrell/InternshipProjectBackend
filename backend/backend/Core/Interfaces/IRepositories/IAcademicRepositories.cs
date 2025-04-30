@@ -21,7 +21,7 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<Academic> GetMyAcademic(ClaimsPrincipal User);
 
-        Task UpdateAcademics(Academic academic);
+        Task UpdateAcademics(AddAcademicsDto addAcademicsDto, int id);
 
         Task DeleteAcademic(int id);
     }

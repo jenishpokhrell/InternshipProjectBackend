@@ -1,4 +1,5 @@
-﻿using backend.Core.Entities;
+﻿using backend.Core.DTOs.Projects;
+using backend.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,16 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IProjectRepositories
     {
-        Task AddProject(Projects projects);
+        Task<Projects> AddProject(ClaimsPrincipal User, AddProjectDto addProjectDto);
 
         Task<Projects> GetProjectById(int id);
 
         Task<IEnumerable<Projects>> GetProjectByCandidateId(string candidateId);
 
         Task<IEnumerable<Projects>> GetAllProjects();
+
+        Task UpdateProjects(AddProjectDto addProjectDto, int id);
+
+        Task DeleteProject(int id);
     }
 }

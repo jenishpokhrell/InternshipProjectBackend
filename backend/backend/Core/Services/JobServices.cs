@@ -37,25 +37,7 @@ namespace backend.Core.Services
         //Method Posting job
         public async Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, PostJobDto postJobDto)
         {
-            Job job = new Job()
-            {
-                JobTitle = postJobDto.JobTitle,
-                JobDescription = postJobDto.JobDescription,
-                No_of_Openings = postJobDto.No_of_Openings,
-                JobLevel = postJobDto.JobLevel,
-                JobType = postJobDto.JobType,
-                Requirements = postJobDto.Requirements,
-                Min_Years_of_Experience_Required = postJobDto.Min_Years_of_Experience_Required,
-                Max_Years_of_Experience_Required = postJobDto.Max_Years_of_Experience_Required,
-                MinimumSalary = postJobDto.MinimumSalary,
-                MaximumSalary = postJobDto.MaximumSalary,
-                Location = postJobDto.Location,
-                IsActive = postJobDto.IsActive,
-                EmployerId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                PostedBy = User.Identity.Name
-            };
-
-            await _jobrepositories.PostJob(job);
+            await _jobrepositories.PostJob(User, postJobDto);
             await _logServices.SaveNewLog(User.Identity.Name, "Posted a new job");
 
             return new GeneralServiceResponseDto()
@@ -221,22 +203,7 @@ namespace backend.Core.Services
                 throw new UnauthorizedAccessException("You can not authorized to modify this job.");
             }
 
-            job.JobTitle = postJobDto.JobTitle;
-            job.JobDescription = postJobDto.JobDescription;
-            job.No_of_Openings = postJobDto.No_of_Openings;
-            job.JobType = postJobDto.JobType;
-            job.JobLevel = postJobDto.JobLevel;
-            job.Requirements = postJobDto.Requirements;
-            job.Min_Years_of_Experience_Required = postJobDto.Min_Years_of_Experience_Required;
-            job.Max_Years_of_Experience_Required = postJobDto.Max_Years_of_Experience_Required;
-            job.MinimumSalary = postJobDto.MinimumSalary;
-            job.MaximumSalary = postJobDto.MaximumSalary;
-            job.Location = postJobDto.Location;
-            job.IsActive = postJobDto.IsActive;
-            job.UpdatedAt = DateTime.Now;
-
-            await _jobrepositories.UpdateJob(job);
-           
+            await _jobrepositories.UpdateJob(postJobDto, id);
             await _logServices.SaveNewLog(User.Identity.Name, "Updated their job posting.");
 
             return new GeneralServiceResponseDto()

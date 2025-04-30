@@ -124,14 +124,14 @@ namespace backend.Core.Services
                 };
             }
 
-            academic.InstitutionName = addAcademicsDto.InstitutionName;
+            /*academic.InstitutionName = addAcademicsDto.InstitutionName;
             academic.Stream = addAcademicsDto.Stream;
             academic.GraduationYear = addAcademicsDto.GraduationYear;
             academic.StartYear = addAcademicsDto.StartYear;
             academic.DegreeType = addAcademicsDto.DegreeType;
-            academic.CurrentSemester = addAcademicsDto.CurrentSemester;
+            academic.CurrentSemester = addAcademicsDto.CurrentSemester;*/
 
-            await _academicrepositories.UpdateAcademics(academic);
+            await _academicrepositories.UpdateAcademics(addAcademicsDto, id);
 
             return new GeneralServiceResponseDto()
             {

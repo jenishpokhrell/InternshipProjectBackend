@@ -60,8 +60,6 @@ namespace backend.Repositories
 
                 return addAcademics;
             }
-            /*await _context.Academics.AddAsync(academics);
-            await _context.SaveChangesAsync();  */
         }
 
         //Repo method for getting academic by id
@@ -110,10 +108,25 @@ namespace backend.Repositories
         }
 
         //Repo method for updating academic
-        public async Task UpdateAcademics(Academic academic)
+        public async Task UpdateAcademics(AddAcademicsDto addAcademicsDto, int id)
         {
-            _context.Academics.Update(academic);
-            await _context.SaveChangesAsync();
+            var query = "UPDATE Academics SET InstitutionName = @InstitutionName, Stream = @Stream, StartYear = @StartYear, " +
+                "GraduationYear = @GraduationYear, DegreeType = @DegreeType, CurrentSemester = @CurrentSemester " +
+                "WHERE Id = @Id";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("Id", id, DbType.Int32);
+            parameters.Add("InstitutionName", addAcademicsDto.InstitutionName, DbType.String);
+            parameters.Add("Stream", addAcademicsDto.Stream, DbType.String);
+            parameters.Add("StartYear", addAcademicsDto.StartYear, DbType.String);
+            parameters.Add("GraduationYear", addAcademicsDto.GraduationYear, DbType.String);
+            parameters.Add("DegreeType", addAcademicsDto.DegreeType, DbType.String);
+            parameters.Add("CurrentSemester", addAcademicsDto.CurrentSemester, DbType.String);
+
+            using(var connection = _dContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
         }
 
         //Repo method for deleting academic by id
