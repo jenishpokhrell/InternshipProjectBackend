@@ -25,7 +25,7 @@ namespace backend.Controllers
         [HttpPost]
         [Route("Add-Academics")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> AddAcademicAsync([FromBody] AddAcademicsDto addAcademicDto)
+        public async Task<IActionResult> AddAcademicAsync([FromBody] AcademicsDto addAcademicDto)
         {
             var addAcademics = await _academicServices.AddAcademicAsync(User, addAcademicDto);
             if (!addAcademics.IsSuccess)
@@ -77,9 +77,9 @@ namespace backend.Controllers
         [HttpPut]
         [Route("UpdateAcademics/{id}")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> UpdateAcademics([FromBody] AddAcademicsDto addAcademicsDto, int id)
+        public async Task<IActionResult> UpdateAcademics([FromBody] AcademicsDto updateAcademicsDto, int id)
         {
-            var updatedAcademic = await _academicServices.UpdateAcademicsAsync(User, addAcademicsDto, id);
+            var updatedAcademic = await _academicServices.UpdateAcademicsAsync(User, updateAcademicsDto, id);
             if (updatedAcademic.IsSuccess)
             {
                 return Ok(updatedAcademic);

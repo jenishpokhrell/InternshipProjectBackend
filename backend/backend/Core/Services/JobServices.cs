@@ -35,7 +35,7 @@ namespace backend.Core.Services
         }
 
         //Method Posting job
-        public async Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, PostJobDto postJobDto)
+        public async Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, JobDto postJobDto)
         {
             await _jobrepositories.PostJob(User, postJobDto);
             await _logServices.SaveNewLog(User.Identity.Name, "Posted a new job");
@@ -189,7 +189,7 @@ namespace backend.Core.Services
         }
 
         //Updating the jobs
-        public async Task<GeneralServiceResponseDto> UpdateJobAsync(ClaimsPrincipal User, PostJobDto postJobDto, int id)
+        public async Task<GeneralServiceResponseDto> UpdateJobAsync(ClaimsPrincipal User, JobDto updateJobDto, int id)
         {
             var job = await _jobrepositories.GetJobById(id);
             if(job is null)
@@ -203,7 +203,7 @@ namespace backend.Core.Services
                 throw new UnauthorizedAccessException("You can not authorized to modify this job.");
             }
 
-            await _jobrepositories.UpdateJob(postJobDto, id);
+            await _jobrepositories.UpdateJob(updateJobDto, id);
             await _logServices.SaveNewLog(User.Identity.Name, "Updated their job posting.");
 
             return new GeneralServiceResponseDto()

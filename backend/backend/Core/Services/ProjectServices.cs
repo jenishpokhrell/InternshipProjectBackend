@@ -33,7 +33,7 @@ namespace backend.Core.Services
         }
 
         //Method for adding project
-        public async Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto)
+        public async Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, ProjectDto addProjectDto)
         {
             await _projectRepositories.AddProject(User, addProjectDto);
             await _logServices.SaveNewLog(User.Identity.Name, "Added a new project");
@@ -93,7 +93,7 @@ namespace backend.Core.Services
         }
 
         //Method for updating project
-        public async Task<GeneralServiceResponseDto> UpdateProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto, int id)
+        public async Task<GeneralServiceResponseDto> UpdateProjectAsync(ClaimsPrincipal User, ProjectDto updateProjectDto, int id)
         {
             var project = await _projectRepositories.GetProjectById(id);
             if(project is null)
@@ -117,7 +117,7 @@ namespace backend.Core.Services
                 };
             }
 
-            await _projectRepositories.UpdateProjects(addProjectDto, id);
+            await _projectRepositories.UpdateProjects(updateProjectDto, id);
             await _logServices.SaveNewLog(User.Identity.Name, "Updated their project");
 
             return new GeneralServiceResponseDto()

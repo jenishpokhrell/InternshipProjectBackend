@@ -24,7 +24,7 @@ namespace backend.Repositories
         }
 
         //Repo method for adding project
-        public async Task<Projects> AddProject(ClaimsPrincipal User, AddProjectDto addProjectDto)
+        public async Task<Projects> AddProject(ClaimsPrincipal User, ProjectDto addProjectDto)
         {
             var candidateId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -87,16 +87,16 @@ namespace backend.Repositories
         }
 
         //Repo method for updating projects using id
-        public async Task UpdateProjects(AddProjectDto addProjectDto, int id)
+        public async Task UpdateProjects(ProjectDto updateProjectDto, int id)
         {
             var query = "UPDATE Projects SET ProjectName = @ProjectName, ProjectDescription = @ProjectDescription, ProjectURL = @ProjectURL " +
                 "WHERE ProjectId = @ProjectId";
 
             var parameters = new DynamicParameters();
             parameters.Add("ProjectId", id, DbType.Int32);
-            parameters.Add("ProjectName", addProjectDto.ProjectName, DbType.String);
-            parameters.Add("ProjectDescription", addProjectDto.ProjectDescription, DbType.String);
-            parameters.Add("ProjectURL", addProjectDto.ProjectURL, DbType.String);
+            parameters.Add("ProjectName", updateProjectDto.ProjectName, DbType.String);
+            parameters.Add("ProjectDescription", updateProjectDto.ProjectDescription, DbType.String);
+            parameters.Add("ProjectURL", updateProjectDto.ProjectURL, DbType.String);
 
             using(var connection = _dContext.CreateConnection())
             {

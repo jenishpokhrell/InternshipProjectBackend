@@ -26,9 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Core\DTOs\Auth\" />
-    <Folder Include="Core\DTOs\Experience\" />
-    <Folder Include="Core\DTOs\Job\" />
-    <Folder Include="Core\DTOs\Projects\" />
   </ItemGroup>
 
 </Project>

@@ -32,7 +32,7 @@ namespace backend.Core.Services
         }
 
         //Method for adding work experiences
-        public async Task<GeneralServiceResponseDto> AddExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto)
+        public async Task<GeneralServiceResponseDto> AddExperienceAsync(ClaimsPrincipal User, ExperienceDto addExperienceDto)
         {
             if(!DateTime.TryParseExact(addExperienceDto.From, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
             {
@@ -134,9 +134,9 @@ namespace backend.Core.Services
         }
 
         //Method for updating work experiences
-        public async Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto, int id)
+        public async Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, ExperienceDto updateExperienceDto, int id)
         {
-            if (!DateTime.TryParseExact(addExperienceDto.From, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
+            if (!DateTime.TryParseExact(updateExperienceDto.From, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
             {
                 return new GeneralServiceResponseDto()
                 {
@@ -147,9 +147,9 @@ namespace backend.Core.Services
             }
 
             DateTime? toDate = null;
-            if (!string.IsNullOrEmpty(addExperienceDto.To) && addExperienceDto.To.ToLower() != "present")
+            if (!string.IsNullOrEmpty(updateExperienceDto.To) && updateExperienceDto.To.ToLower() != "present")
             {
-                if (!DateTime.TryParseExact(addExperienceDto.To, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedToDate))
+                if (!DateTime.TryParseExact(updateExperienceDto.To, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedToDate))
                 {
                     return new GeneralServiceResponseDto()
                     {
@@ -175,12 +175,12 @@ namespace backend.Core.Services
                 throw new UnauthorizedAccessException("You are not authorized to modify this experience.");
             }
 
-            experience.JobTitle = addExperienceDto.JobTitle;
-            experience.JobDescription = addExperienceDto.JobDescription;
-            experience.CompanyName = addExperienceDto.CompanyName;
+            experience.JobTitle = updateExperienceDto.JobTitle;
+            experience.JobDescription = updateExperienceDto.JobDescription;
+            experience.CompanyName = updateExperienceDto.CompanyName;
             experience.From = fromDate;
             experience.To = toDate;
-            experience.IsCurrentlyWoring = addExperienceDto.To.ToLower() == "present";
+            experience.IsCurrentlyWoring = updateExperienceDto.To.ToLower() == "present";
 
             await _experienceRepositories.UpdateExperienceAsync(experience);
 

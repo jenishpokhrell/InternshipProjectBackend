@@ -10,7 +10,7 @@ namespace backend.Core.Interfaces
 {
     public interface IExperienceServices
     {
-        Task<GeneralServiceResponseDto> AddExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto);
+        Task<GeneralServiceResponseDto> AddExperienceAsync(ClaimsPrincipal User, ExperienceDto addExperienceDto);
 
         Task<IEnumerable<GetExperienceDto>> GetAllExperiencesAsync();
 
@@ -20,7 +20,7 @@ namespace backend.Core.Interfaces
 
         Task<IEnumerable<GetExperienceDto>> GetMyExperiencesAsync(ClaimsPrincipal User);
 
-        Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, AddExperienceDto addExperienceDto, int id);
+        Task<GeneralServiceResponseDto> UpdateExperienceAsync(ClaimsPrincipal User, ExperienceDto updateExperienceDto, int id);
 
         Task<GeneralServiceResponseDto> DeleteExperienceAsync(ClaimsPrincipal User, int id);
     }

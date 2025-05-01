@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.Core.DTOs.Experience
 {
-    public class AddExperienceDto
+    public class ExperienceDto
     {
         [Required]
         public string JobTitle { get; set; }

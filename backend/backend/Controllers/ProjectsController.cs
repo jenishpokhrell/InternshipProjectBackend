@@ -25,7 +25,7 @@ namespace backend.Controllers
         [HttpPost]
         [Route("Add-Project")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> AddProjectAsync([FromBody] AddProjectDto addProjectDto)
+        public async Task<IActionResult> AddProjectAsync([FromBody] ProjectDto addProjectDto)
         {
             var project = await _projectServices.AddProjectAsync(User, addProjectDto);
             if (!project.IsSuccess)
@@ -65,9 +65,9 @@ namespace backend.Controllers
         [HttpPut]
         [Route("Update-Project/{id}")]
         [Authorize(Roles = StaticUserRole.CANDIDATE)]
-        public async Task<IActionResult> UpdateProjectAsync([FromBody] AddProjectDto addProjectDto, int id)
+        public async Task<IActionResult> UpdateProjectAsync([FromBody] ProjectDto updateProjectDto, int id)
         {
-            var updatedProject = await _projectServices.UpdateProjectAsync(User, addProjectDto, id);
+            var updatedProject = await _projectServices.UpdateProjectAsync(User, updateProjectDto, id);
             return Ok(updatedProject);
         }
 

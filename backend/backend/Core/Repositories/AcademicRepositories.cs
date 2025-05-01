@@ -26,7 +26,7 @@ namespace backend.Repositories
         }
 
         //Repo method for ading academic
-        public async Task<Academic> AddAcademics(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto)
+        public async Task<Academic> AddAcademics(ClaimsPrincipal User, AcademicsDto addAcademicsDto)
         {
             var candidateId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -108,7 +108,7 @@ namespace backend.Repositories
         }
 
         //Repo method for updating academic
-        public async Task UpdateAcademics(AddAcademicsDto addAcademicsDto, int id)
+        public async Task UpdateAcademics(AcademicsDto updateAcademicsDto, int id)
         {
             var query = "UPDATE Academics SET InstitutionName = @InstitutionName, Stream = @Stream, StartYear = @StartYear, " +
                 "GraduationYear = @GraduationYear, DegreeType = @DegreeType, CurrentSemester = @CurrentSemester " +
@@ -116,12 +116,12 @@ namespace backend.Repositories
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", id, DbType.Int32);
-            parameters.Add("InstitutionName", addAcademicsDto.InstitutionName, DbType.String);
-            parameters.Add("Stream", addAcademicsDto.Stream, DbType.String);
-            parameters.Add("StartYear", addAcademicsDto.StartYear, DbType.String);
-            parameters.Add("GraduationYear", addAcademicsDto.GraduationYear, DbType.String);
-            parameters.Add("DegreeType", addAcademicsDto.DegreeType, DbType.String);
-            parameters.Add("CurrentSemester", addAcademicsDto.CurrentSemester, DbType.String);
+            parameters.Add("InstitutionName", updateAcademicsDto.InstitutionName, DbType.String);
+            parameters.Add("Stream", updateAcademicsDto.Stream, DbType.String);
+            parameters.Add("StartYear", updateAcademicsDto.StartYear, DbType.String);
+            parameters.Add("GraduationYear", updateAcademicsDto.GraduationYear, DbType.String);
+            parameters.Add("DegreeType", updateAcademicsDto.DegreeType, DbType.String);
+            parameters.Add("CurrentSemester", updateAcademicsDto.CurrentSemester, DbType.String);
 
             using(var connection = _dContext.CreateConnection())
             {

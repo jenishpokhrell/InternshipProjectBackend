@@ -10,15 +10,15 @@ namespace backend.Core.Interfaces
 {
     public interface IProjectServices
     {
-        Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto);
+        Task<GeneralServiceResponseDto> AddProjectAsync(ClaimsPrincipal User, ProjectDto addProjectDto);
 
-        Task<GeneralServiceResponseDto> UpdateProjectAsync(ClaimsPrincipal User, AddProjectDto addProjectDto, int id);
 
         Task<IEnumerable<GetMyProjectDto>> GetMyProjectsAsync(ClaimsPrincipal User);
 
         Task<IEnumerable<GetProjectDto>> GetProjectsByCandidateIdAsync(string candidateId);
 
         Task<GetProjectDto> GetProjectByIdAsync(ClaimsPrincipal User, int id);
+        Task<GeneralServiceResponseDto> UpdateProjectAsync(ClaimsPrincipal User, ProjectDto updateProjectDto, int id);
 
         Task<GeneralServiceResponseDto> DeleteProjectAsync(ClaimsPrincipal User, int id);
     }

@@ -11,7 +11,7 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IAcademicRepositories
     {
-        Task<Academic> AddAcademics(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto);
+        Task<Academic> AddAcademics(ClaimsPrincipal User, AcademicsDto addAcademicsDto);
 
         Task<IEnumerable<Academic>> GetAcademics();
 
@@ -21,7 +21,7 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<Academic> GetMyAcademic(ClaimsPrincipal User);
 
-        Task UpdateAcademics(AddAcademicsDto addAcademicsDto, int id);
+        Task UpdateAcademics(AcademicsDto updateAcademicsDto, int id);
 
         Task DeleteAcademic(int id);
     }

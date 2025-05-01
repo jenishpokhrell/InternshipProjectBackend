@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using backend.Core.Entities;
 using System.IO;
 
-namespace backend.Core.Services
+namespace backend.Helpers
 {
     public class CloudinaryServices
     {

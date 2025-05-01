@@ -11,7 +11,7 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IJobRepositories
     {
-        Task<Job> PostJob(ClaimsPrincipal User, PostJobDto postJobDto);
+        Task<Job> PostJob(ClaimsPrincipal User, JobDto postJobDto);
 
         Task<Job> GetJobById(int id);
 
@@ -19,7 +19,7 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<IEnumerable<JobApplication>> GetJobApplicationsByJobIdAsync(int jobId);
 
-        Task UpdateJob(PostJobDto postJobDto, int id);
+        Task UpdateJob(JobDto updateJobDto, int id);
 
         Task DeleteJobAsync(int id);
     }

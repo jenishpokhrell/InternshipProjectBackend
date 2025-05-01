@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using backend.Core.DTOs.Auth;
 using backend.Core.Interfaces;
 using backend.Core.Services;
+using backend.Helpers;
 
 namespace backend.Controllers
 {

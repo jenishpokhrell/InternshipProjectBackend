@@ -11,7 +11,7 @@ namespace backend.Core.Interfaces
 {
     public interface IJobServices
     {
-        Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, PostJobDto postJobDto);
+        Task<GeneralServiceResponseDto> PostJobAsync(ClaimsPrincipal User, JobDto postJobDto);
 
         Task<IEnumerable<GetJobDtoForCandidate>> GetAllJobsForCandidateAsync();
 
@@ -27,7 +27,7 @@ namespace backend.Core.Interfaces
 
         Task<GeneralServiceResponseDto> ApplyForJobAsync(ClaimsPrincipal User, int id);
 
-        Task<GeneralServiceResponseDto> UpdateJobAsync(ClaimsPrincipal User, PostJobDto postJobDto, int id);
+        Task<GeneralServiceResponseDto> UpdateJobAsync(ClaimsPrincipal User, JobDto updateJobDto, int id);
 
         Task<GeneralServiceResponseDto> DeleteJobAsync(ClaimsPrincipal User, int id);
 

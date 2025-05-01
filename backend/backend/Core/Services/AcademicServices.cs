@@ -28,19 +28,8 @@ namespace backend.Core.Services
         }
 
         //Adding new academic
-        public async Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto)
+        public async Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AcademicsDto addAcademicsDto)
         {
-            /*var academics = new Academic()
-            {
-                InstitutionName = addAcademicDto.InstitutionName,
-                Stream = addAcademicDto.Stream,
-                DegreeType = addAcademicDto.DegreeType,
-                CurrentSemester = addAcademicDto.CurrentSemester,
-                StartYear = addAcademicDto.StartYear,
-                GraduationYear = addAcademicDto.GraduationYear,
-                CandidateId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-            };*/
-
             await _academicrepositories.AddAcademics(User, addAcademicsDto);
 
             return new GeneralServiceResponseDto()
@@ -99,7 +88,7 @@ namespace backend.Core.Services
 
 
         //Method for updating individuals academic
-        public async Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto, int id)
+        public async Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AcademicsDto updateAcademicsDto, int id)
         {
             var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var academic = await _academicrepositories.GetAcademicById(id);
@@ -124,19 +113,12 @@ namespace backend.Core.Services
                 };
             }
 
-            /*academic.InstitutionName = addAcademicsDto.InstitutionName;
-            academic.Stream = addAcademicsDto.Stream;
-            academic.GraduationYear = addAcademicsDto.GraduationYear;
-            academic.StartYear = addAcademicsDto.StartYear;
-            academic.DegreeType = addAcademicsDto.DegreeType;
-            academic.CurrentSemester = addAcademicsDto.CurrentSemester;*/
-
-            await _academicrepositories.UpdateAcademics(addAcademicsDto, id);
+            await _academicrepositories.UpdateAcademics(updateAcademicsDto, id);
 
             return new GeneralServiceResponseDto()
             {
                 IsSuccess = true,
-                StatusCode = 400,
+                StatusCode = 200,
                 Message = "Academic experience updated successfully."
             };
         }

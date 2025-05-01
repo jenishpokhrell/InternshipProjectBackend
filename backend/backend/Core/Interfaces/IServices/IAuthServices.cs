@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using backend.Core.DTOs.Auth;
 using backend.Core.Services;
 using Microsoft.AspNetCore.Http;
+using backend.Helpers;
 
 namespace backend.Core.Interfaces
 {

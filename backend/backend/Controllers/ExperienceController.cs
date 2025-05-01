@@ -25,7 +25,7 @@ namespace backend.Controllers
         [HttpPost]
         [Route("Add-Experience")]
         [Authorize(Roles = StaticUserRole.CANDIDATE_EMPLOYER)]
-        public async Task<IActionResult> AddExperience([FromBody] AddExperienceDto addExperienceDto)
+        public async Task<IActionResult> AddExperience([FromBody] ExperienceDto addExperienceDto)
         {
             var addExperience = await _experiencesServices.AddExperienceAsync(User, addExperienceDto);
             return Ok(addExperience);
@@ -71,16 +71,16 @@ namespace backend.Controllers
         [HttpPut]
         [Route("Update-Experience/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateExperience([FromBody] AddExperienceDto addExperienceDto, int id)
+        public async Task<IActionResult> UpdateExperience([FromBody] ExperienceDto updateExperienceDto, int id)
         {
-            var updateExperience = await _experiencesServices.UpdateExperienceAsync(User, addExperienceDto, id);
+            var updateExperience = await _experiencesServices.UpdateExperienceAsync(User, updateExperienceDto, id);
             return Ok(updateExperience);
         }
 
         [HttpDelete]
         [Route("Delete-Experience/{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteExperience(int id)
+        public async Task<IActionResult> DeleteExperience(int id)   
         {
             var deleteExperience = await _experiencesServices.DeleteExperienceAsync(User, id);
             if (!deleteExperience.IsSuccess)

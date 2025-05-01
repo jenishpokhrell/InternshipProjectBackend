@@ -54,7 +54,7 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<Job> PostJob(ClaimsPrincipal User, PostJobDto postJobDto)
+        public async Task<Job> PostJob(ClaimsPrincipal User, JobDto postJobDto)
         {
             var postedBy = User.Identity.Name;
             var employerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -111,7 +111,7 @@ namespace backend.Repositories
             }
         }
 
-        public async Task UpdateJob(PostJobDto postJobDto, int id)
+        public async Task UpdateJob(JobDto updateJobDto, int id)
         {
             var updatedAt = DateTime.Now;
 
@@ -124,18 +124,18 @@ namespace backend.Repositories
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", id, DbType.Int32);
-            parameters.Add("JobTitle", postJobDto.JobTitle, DbType.String);
-            parameters.Add("JobDescription", postJobDto.JobDescription, DbType.String);
-            parameters.Add("JobType", postJobDto.JobType, DbType.String);
-            parameters.Add("JobLevel", postJobDto.JobLevel, DbType.String);
-            parameters.Add("No_of_Openings", postJobDto.No_of_Openings, DbType.String);
-            parameters.Add("Requirements", postJobDto.Requirements, DbType.String);
-            parameters.Add("Min_Years_of_Experience_Required", postJobDto.Min_Years_of_Experience_Required, DbType.String);
-            parameters.Add("Max_Years_of_Experience_Required", postJobDto.Max_Years_of_Experience_Required, DbType.String);
-            parameters.Add("MinimumSalary", postJobDto.MinimumSalary, DbType.String);
-            parameters.Add("MaximumSalary", postJobDto.MaximumSalary, DbType.String);
-            parameters.Add("Location", postJobDto.Location, DbType.String);
-            parameters.Add("IsActive", postJobDto.IsActive, DbType.Boolean);
+            parameters.Add("JobTitle", updateJobDto.JobTitle, DbType.String);
+            parameters.Add("JobDescription", updateJobDto.JobDescription, DbType.String);
+            parameters.Add("JobType", updateJobDto.JobType, DbType.String);
+            parameters.Add("JobLevel", updateJobDto.JobLevel, DbType.String);
+            parameters.Add("No_of_Openings", updateJobDto.No_of_Openings, DbType.String);
+            parameters.Add("Requirements", updateJobDto.Requirements, DbType.String);
+            parameters.Add("Min_Years_of_Experience_Required", updateJobDto.Min_Years_of_Experience_Required, DbType.String);
+            parameters.Add("Max_Years_of_Experience_Required", updateJobDto.Max_Years_of_Experience_Required, DbType.String);
+            parameters.Add("MinimumSalary", updateJobDto.MinimumSalary, DbType.String);
+            parameters.Add("MaximumSalary", updateJobDto.MaximumSalary, DbType.String);
+            parameters.Add("Location", updateJobDto.Location, DbType.String);
+            parameters.Add("IsActive", updateJobDto.IsActive, DbType.Boolean);
             parameters.Add("UpdatedAt", updatedAt, DbType.DateTime);
 
             using(var connection = _dContext.CreateConnection())

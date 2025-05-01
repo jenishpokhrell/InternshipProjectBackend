@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.Core.DTOs.Academics
 {
-    public class AddAcademicsDto
+    public class AcademicsDto
     {
         public string InstitutionName { get; set; }
         public string Stream { get; set; }

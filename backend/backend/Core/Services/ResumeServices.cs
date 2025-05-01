@@ -5,6 +5,7 @@ using backend.Core.DTOs.Resume;
 using backend.Core.Entities;
 using backend.Core.Interfaces;
 using backend.Core.Interfaces.IRepositories;
+using backend.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;

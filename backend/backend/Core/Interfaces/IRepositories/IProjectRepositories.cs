@@ -10,7 +10,7 @@ namespace backend.Core.Interfaces.IRepositories
 {
     public interface IProjectRepositories
     {
-        Task<Projects> AddProject(ClaimsPrincipal User, AddProjectDto addProjectDto);
+        Task<Projects> AddProject(ClaimsPrincipal User, ProjectDto addProjectDto);
 
         Task<Projects> GetProjectById(int id);
 
@@ -18,7 +18,7 @@ namespace backend.Core.Interfaces.IRepositories
 
         Task<IEnumerable<Projects>> GetAllProjects();
 
-        Task UpdateProjects(AddProjectDto addProjectDto, int id);
+        Task UpdateProjects(ProjectDto updateProjectDto, int id);
 
         Task DeleteProject(int id);
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.Core.DTOs.Projects
 {
-    public class AddProjectDto
+    public class ProjectDto
     {
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }

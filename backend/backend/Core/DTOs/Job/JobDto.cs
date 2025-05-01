@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.Core.DTOs.Job
 {
-    public class PostJobDto
+    public class JobDto
     {
         public string JobTitle { get; set; }
         public string JobDescription { get; set; }

@@ -10,7 +10,7 @@ namespace backend.Core.Interfaces.IServices
 {
     public interface IAcademicServices
     {
-        Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicDto);
+        Task<GeneralServiceResponseDto> AddAcademicAsync(ClaimsPrincipal User, AcademicsDto addAcademicDto);
 
         Task<GetAcademicsDto> GetMyAcademicsAsync(ClaimsPrincipal User);
 
@@ -20,7 +20,7 @@ namespace backend.Core.Interfaces.IServices
 
         Task<GetAcademicsDto> GetAcademicsByIdAsync(int id);
 
-        Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AddAcademicsDto addAcademicsDto, int id);
+        Task<GeneralServiceResponseDto> UpdateAcademicsAsync(ClaimsPrincipal User, AcademicsDto updateAcademicsDto, int id);
 
         Task<GeneralServiceResponseDto> DeleteAcademicsAsync(ClaimsPrincipal User, int id);
 

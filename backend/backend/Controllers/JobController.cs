@@ -24,7 +24,7 @@ namespace backend.Controllers
         [HttpPost]
         [Route("Post-Job")]
         [Authorize(Roles = StaticUserRole.EMPLOYER)]
-        public async Task<IActionResult> PostJobAsync([FromBody] PostJobDto postJobDto)
+        public async Task<IActionResult> PostJobAsync([FromBody] JobDto postJobDto)
         {
             var job = await _jobServices.PostJobAsync(User, postJobDto);
             if (job.IsSuccess)
@@ -114,9 +114,9 @@ namespace backend.Controllers
         [HttpPut]
         [Route("Update-Job/{id}")]
         [Authorize(Roles = StaticUserRole.EMPLOYER)]
-        public async Task<IActionResult> UpdateJob([FromBody] PostJobDto postJobDto, int id)
+        public async Task<IActionResult> UpdateJob([FromBody] JobDto updateJobDto, int id)
         {
-            var updateJob = await _jobServices.UpdateJobAsync(User, postJobDto, id);
+            var updateJob = await _jobServices.UpdateJobAsync(User, updateJobDto, id);
             return Ok(updateJob);
         }
         

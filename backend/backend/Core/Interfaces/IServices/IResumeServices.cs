@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using backend.Core.DTOs.General;
 using backend.Core.DTOs.Resume;
 using backend.Core.Services;
+using backend.Helpers;
 
 namespace backend.Core.Interfaces
 {
