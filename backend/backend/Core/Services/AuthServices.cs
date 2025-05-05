@@ -93,6 +93,17 @@ namespace backend.Core.Services
                 };
             }
 
+            var isEmailExists = await _userManager.FindByEmailAsync(registerDto.Email);
+            if(isEmailExists is not null)
+            {
+                return new GeneralServiceResponseDto()
+                {
+                    IsSuccess = false,
+                    StatusCode = 201,
+                    Message = "Email address Already Exists"
+                };
+            }
+
             string photoUrl = null;
             if(profilePhoto != null)
             {
@@ -192,13 +203,13 @@ namespace backend.Core.Services
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
             if (user is null)
-                return null;
+            {
+                user = await _userManager.FindByEmailAsync(loginDto.Username);
+            }
 
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (!isPasswordCorrect)
+            if (user is null || !isPasswordCorrect)
                 return null;
-
-           
 
             var newToken = await _generateToken.GenerateToken(user);
             var roles = await _userManager.GetRolesAsync(user);
