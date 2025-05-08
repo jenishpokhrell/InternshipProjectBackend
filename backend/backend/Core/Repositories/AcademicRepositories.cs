@@ -16,16 +16,14 @@ namespace backend.Repositories
 {
     public class AcademicRepositories : IAcademicRepositories
     {
-        private readonly ApplicationDBContext _context;
         private readonly DapperContext _dContext;
 
-        public AcademicRepositories(ApplicationDBContext context, DapperContext dContext)
+        public AcademicRepositories(DapperContext dContext)
         {
-            _context = context;
             _dContext = dContext;
         }
 
-        //Repo method for ading academic
+        //Repo method for adding academic
         public async Task<Academic> AddAcademics(ClaimsPrincipal User, AcademicsDto addAcademicsDto)
         {
             var candidateId = User.FindFirstValue(ClaimTypes.NameIdentifier);

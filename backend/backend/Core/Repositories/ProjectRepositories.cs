@@ -107,7 +107,7 @@ namespace backend.Repositories
         //Repo method for deleting project by id
         public async Task DeleteProject(int id)
         {
-            var query = "DELETE FROM Projects WHERE ProjectId = @ProjectId";
+            var query = "DELETE FROM Projects WHERE ProjectId = @Id";
 
             using (var connection = _dContext.CreateConnection())
             {
